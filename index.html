@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ฟอร์มบริจาคเสื้อผ้า</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>แบบฟอร์มบริจาคเสื้อผ้า</h1>
+    <form id="donationForm">
+      <label>ชื่อ-นามสกุล:</label>
+      <input type="text" name="name" required>
+
+      <label>อีเมล:</label>
+      <input type="email" name="email" required>
+
+      <label>ประเภทเสื้อผ้า:</label>
+      <select name="clothingType" required>
+        <option value="ชาย">ชาย</option>
+        <option value="หญิง">หญิง</option>
+        <option value="เด็ก">เด็ก</option>
+      </select>
+
+      <label>จำนวนชิ้น:</label>
+      <input type="number" name="quantity" min="1" required>
+
+      <button type="submit">ส่งข้อมูลบริจาค</button>
+    </form>
+
+    <div class="thank-you" id="thankYouMessage">
+      ✅ ขอบคุณสำหรับการบริจาคของคุณ!
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
