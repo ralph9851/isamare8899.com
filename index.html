@@ -10,9 +10,9 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons+Round');
 
 :root {
-  --primary: #0088ff; /* สีฟ้าหลัก */
-  --primary-hover: #0070d2;
-  --bg-main: #f3f6f9; /* สีพื้นหลังหลัก */
+  --primary: #7c3aed; /* สีม่วงหลัก */
+  --primary-hover: #6d28d9;
+  --bg-main: #f5f3ff; /* สีพื้นหลังหลัก (อมม่วงอ่อนๆ) */
   --bg-card: #ffffff;
   --text-main: #333333;
   --text-muted: #6b7280;
@@ -35,14 +35,14 @@ body {
 
 /* --- Header --- */
 header {
-  background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+  background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
   color: white;
   padding: 3rem 1rem 4rem;
   text-align: center;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
-  box-shadow: 0 4px 20px rgba(0, 114, 255, 0.2);
-  margin-bottom: -2rem; /* ดึงเนื้อหาขึ้นไปซ้อนนิดๆ */
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+  margin-bottom: -2rem; 
 }
 header h1 {
   font-size: 2.5rem; font-weight: 700;
@@ -96,7 +96,7 @@ input, select, textarea {
 }
 input:focus, select:focus, textarea:focus {
   outline: none; border-color: var(--primary); background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(0, 136, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
 }
 
 button[type="submit"] {
@@ -118,9 +118,7 @@ button[type="submit"]:hover { background: var(--primary-hover); }
 .ticket:hover { box-shadow: 0 6px 15px rgba(0,0,0,0.05); }
 
 /* Status Indicator (Left Border) */
-.ticket::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
-}
+.ticket::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; }
 .ticket[data-status="open"]::before { background: var(--status-open); }
 .ticket[data-status="progress"]::before { background: var(--status-progress); }
 .ticket[data-status="done"]::before { background: var(--status-done); }
@@ -135,7 +133,36 @@ button[type="submit"]:hover { background: var(--primary-hover); }
   margin-bottom: 0.75rem;
 }
 
-.ticket-desc { color: #4b5563; font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem; background: #f9fafb; padding: 0.75rem; border-radius: 8px; }
+.ticket-desc { 
+  color: #4b5563; font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem; 
+  background: #f9fafb; padding: 0.75rem; border-radius: 8px; 
+}
+
+/* --- Action/Resolution Box (ส่วนพิมพ์ผลการดำเนินการ) --- */
+.ticket-action {
+  background: #f5f3ff;
+  border: 1px dashed #c4b5fd;
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+.ticket-action label {
+  font-size: 0.85rem; font-weight: 600; color: var(--primary); margin-bottom: 0.3rem;
+  display: flex; align-items: center; gap: 0.3rem;
+}
+.action-input-group {
+  display: flex; gap: 0.5rem;
+}
+.action-input-group input {
+  padding: 0.6rem; border: 1px solid #ddd6fe; border-radius: 6px; font-size: 0.9rem; background: #ffffff;
+}
+.action-input-group button {
+  background: var(--primary); color: white; border: none; padding: 0 1rem;
+  border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: 0.2s; font-weight: 500;
+  white-space: nowrap;
+}
+.action-input-group button:hover { background: var(--primary-hover); }
+
 
 .ticket-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 1rem; }
 .ticket-meta { font-size: 0.85rem; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 1rem; }
@@ -247,16 +274,16 @@ button[type="submit"]:hover { background: var(--primary-hover); }
   </div>
 </div>
 
-<div id="toast"><i class="material-icons-round" style="color: #4ade80;">check_circle</i> <span>รับเรื่องร้องเรียนเรียบร้อยแล้ว!</span></div>
+<div id="toast"><i class="material-icons-round" style="color: #4ade80;">check_circle</i> <span>แจ้งเตือน</span></div>
 
 <script>
-// จัดเก็บข้อมูลด้วย LocalStorage (ใช้ Key ใหม่เพื่อไม่ให้ตีกับเวอร์ชันก่อนหน้า)
+// ใช้ Key ใหม่เพื่อรีเซ็ตข้อมูลให้รองรับโครงสร้างใหม่ (มี Action Taken)
 const form = document.getElementById("ticketForm");
 const submitBtn = document.getElementById("submitBtn");
 const ticketList = document.getElementById("ticketList");
 const toast = document.getElementById("toast");
 
-const STORAGE_KEY = "ut_smarthelp_v1";
+const STORAGE_KEY = "ut_smarthelp_purple_v1";
 let tickets = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 let nextId = tickets.length > 0 ? Math.max(...tickets.map(t => t.id)) + 1 : 1;
 
@@ -276,7 +303,9 @@ function updateStatsUI() {
   document.getElementById("doneTickets").textContent = tickets.filter(t => t.status === 'done').length;
 }
 
-function showToast(msg) {
+function showToast(msg, icon = "check_circle", color = "#4ade80") {
+  toast.querySelector('i').textContent = icon;
+  toast.querySelector('i').style.color = color;
   toast.querySelector('span').textContent = msg;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 3000);
@@ -305,6 +334,14 @@ function renderTickets() {
       
       <div class="ticket-desc">${ticket.problemDesc}</div>
       
+      <div class="ticket-action">
+        <label><i class="material-icons-round" style="font-size: 1rem;">engineering</i> ผลการดำเนินการจากเจ้าหน้าที่:</label>
+        <div class="action-input-group">
+          <input type="text" id="action-${ticket.id}" placeholder="อัปเดตความคืบหน้า หรือ ระบุผลการแก้ไข..." value="${ticket.actionTaken || ''}">
+          <button onclick="saveAction(${ticket.id})">บันทึกผล</button>
+        </div>
+      </div>
+      
       <div class="ticket-footer">
         <div class="ticket-meta">
           <span><i class="material-icons-round" style="font-size: 1rem;">person</i> ${ticket.reporterName || 'ประชาชนทั่วไป'}</span>
@@ -319,6 +356,17 @@ function renderTickets() {
       </div>
     </div>
   `).join('');
+}
+
+// ฟังก์ชันสำหรับบันทึกผลการดำเนินการ
+function saveAction(id) {
+  const inputEl = document.getElementById(`action-${id}`);
+  const ticket = tickets.find(t => t.id === id);
+  if (ticket && inputEl) {
+    ticket.actionTaken = inputEl.value;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
+    showToast("บันทึกผลการดำเนินการเรียบร้อย!", "task_alt", "#7c3aed");
+  }
 }
 
 function updateStatus(id, status, selectEl) {
@@ -345,13 +393,14 @@ form.onsubmit = (e) => {
       problemDesc: document.getElementById("problemDesc").value.trim(),
       reporterName: document.getElementById("reporterName").value.trim(),
       status: 'open',
+      actionTaken: '', // เพิ่มฟิลด์ใหม่รองรับการใส่ผลดำเนินการ
       createdAt: Date.now()
     });
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
     renderTickets();
     updateStatsUI();
-    showToast("รับเรื่องร้องเรียนเรียบร้อยแล้ว!");
+    showToast("รับเรื่องร้องเรียนเรียบร้อยแล้ว!", "check_circle", "#4ade80");
     
     submitBtn.innerHTML = originalText;
     submitBtn.disabled = false;
