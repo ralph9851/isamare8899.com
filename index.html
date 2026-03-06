@@ -9,6 +9,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons+Round');
 
+/* --- ตัวแปรสีเริ่มต้น (Light Theme) --- */
 :root {
   --primary: #7c3aed;
   --primary-hover: #6d28d9;
@@ -17,6 +18,7 @@
   --text-dark: #1f2937;
   --text-muted: #6b7280;
   --border-color: #e5e7eb;
+  --input-bg: #f9fafb;
   
   --status-open: #ef4444;       
   --status-open-bg: #fee2e2;
@@ -24,6 +26,24 @@
   --status-progress-bg: #dbeafe;
   --status-done: #10b981;       
   --status-done-bg: #d1fae5;
+  --upvote-color: #f59e0b;
+}
+
+/* --- โหมดกลางคืน (Dark Theme) --- */
+body.dark-mode {
+  --bg-main: #111827;
+  --bg-card: #1f2937;
+  --text-dark: #f9fafb;
+  --text-muted: #9ca3af;
+  --border-color: #374151;
+  --input-bg: #374151;
+  
+  --status-open: #fca5a5;       
+  --status-open-bg: #7f1d1d;
+  --status-progress: #93c5fd;   
+  --status-progress-bg: #1e3a8a;
+  --status-done: #6ee7b7;       
+  --status-done-bg: #064e3b;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,6 +54,7 @@ body {
   color: var(--text-dark);
   min-height: 100vh;
   padding-bottom: 3rem;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 /* --- Header --- */
@@ -41,105 +62,120 @@ header {
   background: var(--bg-card);
   padding: 1.5rem 2rem;
   border-bottom: 1px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  position: sticky; top: 0; z-index: 100;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: background-color 0.3s;
 }
-
-.brand {
-  display: flex; align-items: center; gap: 0.75rem;
-  font-size: 1.5rem; font-weight: 700; color: var(--primary);
-}
+.brand { display: flex; align-items: center; gap: 0.75rem; font-size: 1.5rem; font-weight: 700; color: var(--primary); }
 .brand i { font-size: 2rem; }
-.brand span { color: var(--text-dark); font-weight: 500; font-size: 1rem; margin-left: 0.5rem; border-left: 1px solid #ccc; padding-left: 0.75rem; }
+.brand span { color: var(--text-dark); font-weight: 500; font-size: 1rem; margin-left: 0.5rem; border-left: 1px solid var(--border-color); padding-left: 0.75rem; }
+
+.header-actions { display: flex; align-items: center; gap: 1rem; }
+.theme-toggle { background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; font-size: 1.5rem; transition: color 0.2s; }
+.theme-toggle:hover { color: var(--primary); }
 
 /* --- Layout --- */
 .container { max-width: 1280px; margin: 2rem auto; padding: 0 1.5rem; }
-
-/* --- Stats Dashboard (Hidden) --- */
-.stats-grid { display: none; } /* ซ่อนสถิติตามคำขอ */
-
-/* --- Main Grid --- */
 .main-grid { display: grid; grid-template-columns: 350px 1fr; gap: 2rem; align-items: start; }
 
 /* --- Form Section --- */
 .form-card {
   background: var(--bg-card); border-radius: 12px; padding: 1.5rem;
-  border: 1px solid var(--border-color); position: sticky; top: 6rem;
+  border: 1px solid var(--border-color); position: sticky; top: 6.5rem;
 }
 .form-card h2 { font-size: 1.1rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
 .form-group { margin-bottom: 1rem; }
 label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-dark); margin-bottom: 0.4rem; }
-input, select, textarea {
-  width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #d1d5db;
-  background-color: #f9fafb; font-family: inherit; font-size: 0.9rem; transition: 0.2s;
+input:not([type="checkbox"]), select, textarea {
+  width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--border-color);
+  background-color: var(--input-bg); color: var(--text-dark); font-family: inherit; font-size: 0.9rem; transition: 0.2s;
 }
-input:focus, select:focus, textarea:focus {
-  outline: none; border-color: var(--primary); background-color: #fff; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15); }
+
+/* Urgent Checkbox */
+.urgent-box {
+  background: rgba(239, 68, 68, 0.05); border: 1px dashed #ef4444; border-radius: 8px; padding: 0.75rem;
+  display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: #ef4444; font-weight: 600; font-size: 0.85rem; margin-top: 1rem;
 }
+.urgent-box input { transform: scale(1.2); accent-color: #ef4444; cursor: pointer; }
+
 button.btn-primary {
   width: 100%; padding: 0.875rem; border-radius: 8px; border: none; background: var(--primary); color: white;
   font-weight: 600; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; transition: 0.2s;
 }
 button.btn-primary:hover { background: var(--primary-hover); }
 
-/* --- Feed Section (Traffy Style) --- */
-.feed-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.feed-header h2 { font-size: 1.25rem; font-weight: 600; }
+/* --- Feed Header & Search --- */
+.feed-header { margin-bottom: 1rem; }
+.feed-tools { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
 
-/* Tabs Filter */
-.filter-tabs {
-  display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.5rem; margin-bottom: 1rem;
-}
+.filter-tabs { display: flex; gap: 0.5rem; overflow-x: auto; }
 .filter-btn {
   background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.5rem 1rem;
   border-radius: 20px; font-size: 0.85rem; font-weight: 500; cursor: pointer; color: var(--text-muted); transition: 0.2s; white-space: nowrap;
 }
-.filter-btn:hover { background: #f3f4f6; }
-.filter-btn.active { background: var(--text-dark); color: white; border-color: var(--text-dark); }
+.filter-btn:hover { background: var(--border-color); }
+.filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
+.search-box { position: relative; width: 100%; max-width: 300px; }
+.search-box i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.2rem; }
+.search-box input { padding-left: 2.5rem; border-radius: 20px; }
+
+/* --- Ticket Card --- */
 .ticket-list { display: flex; flex-direction: column; gap: 1rem; }
-
-/* Ticket Card */
 .ticket {
   background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color);
-  padding: 1.25rem; transition: 0.2s;
+  padding: 1.25rem; transition: 0.2s; position: relative; overflow: hidden;
 }
-.ticket:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.ticket:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.05); }
+
+/* Urgent Style (กระพริบขอบแดง) */
+.ticket.is-urgent { border-left: 4px solid #ef4444; }
+.ticket.is-urgent::after {
+  content: "ด่วนพิเศษ"; position: absolute; top: 1rem; right: -2rem; background: #ef4444; color: white;
+  font-size: 0.7rem; font-weight: 700; padding: 0.2rem 2rem; transform: rotate(45deg); box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+.ticket.is-urgent { animation: pulse 2s infinite; }
 
 .t-top { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 0.5rem;}
 .t-id { font-family: monospace; font-weight: 600; color: var(--primary); font-size: 0.9rem;}
 
 .t-desc { font-size: 1.1rem; font-weight: 500; color: var(--text-dark); margin-bottom: 0.5rem; line-height: 1.5; }
-
 .t-loc { display: flex; align-items: flex-start; gap: 0.3rem; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
 .t-loc i { font-size: 1.1rem; color: #ef4444; margin-top: 0.1rem; }
 
 .t-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
 .tag { padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
-.tag-cat { background: #f3f4f6; color: #4b5563; border: 1px solid #d1d5db; }
+.tag-cat { background: var(--border-color); color: var(--text-dark); }
 .tag-status.open { background: var(--status-open-bg); color: var(--status-open); }
 .tag-status.progress { background: var(--status-progress-bg); color: var(--status-progress); }
 .tag-status.done { background: var(--status-done-bg); color: var(--status-done); }
 
-/* Status Select UI */
-.status-update-bar {
-  margin-top: 0.5rem; padding-top: 1rem; border-top: 1px dashed #cbd5e1;
-  display: flex; align-items: center; justify-content: space-between;
+/* Action Footer */
+.t-footer {
+  margin-top: 0.5rem; padding-top: 1rem; border-top: 1px dashed var(--border-color);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
 }
-.status-update-bar select {
+
+/* Upvote Button */
+.upvote-btn {
+  background: rgba(245, 158, 11, 0.1); color: var(--upvote-color); border: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; gap: 0.4rem; transition: 0.2s;
+}
+.upvote-btn:hover { background: var(--upvote-color); color: white; }
+.upvote-btn.voted { background: var(--upvote-color); color: white; }
+
+.status-update select {
   width: auto; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.85rem; 
-  border: 1px solid #cbd5e1; font-weight: 600; outline: none; cursor: pointer;
+  border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-dark); font-weight: 600; outline: none; cursor: pointer;
 }
 
 /* Utils */
-.empty-state { text-align: center; padding: 4rem 1rem; background: var(--bg-card); border-radius: 12px; border: 1px dashed #d1d5db; color: var(--text-muted); }
-.empty-state i { font-size: 3rem; color: #e5e7eb; margin-bottom: 1rem; }
-#toast { position: fixed; bottom: 20px; center: 0; left: 50%; transform: translateX(-50%) translateY(100px); background: #1f2937; color: white; padding: 0.75rem 1.5rem; border-radius: 30px; display: flex; align-items: center; gap: 0.5rem; opacity: 0; transition: 0.3s; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.empty-state { text-align: center; padding: 4rem 1rem; background: var(--bg-card); border-radius: 12px; border: 1px dashed var(--border-color); color: var(--text-muted); }
+#toast { position: fixed; bottom: 20px; center: 0; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 30px; display: flex; align-items: center; gap: 0.5rem; opacity: 0; transition: 0.3s; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 .spin { animation: spin 1s linear infinite; }
 @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -147,8 +183,8 @@ button.btn-primary:hover { background: var(--primary-hover); }
 @media (max-width: 900px) {
   .main-grid { grid-template-columns: 1fr; }
   .form-card { position: static; margin-bottom: 1.5rem; }
-  header { padding: 1rem; }
-  .brand { font-size: 1.25rem; }
+  .feed-tools { flex-direction: column; align-items: flex-start; }
+  .search-box { max-width: 100%; }
 }
 </style>
 </head>
@@ -157,22 +193,16 @@ button.btn-primary:hover { background: var(--primary-hover); }
 <header>
   <div class="brand">
     <i class="material-icons-round">volunteer_activism</i> อต. smarthelp
-    <span>แพลตฟอร์มบริหารจัดการปัญหาเมือง</span>
+    <span>ระบบรับแจ้งปัญหาเมือง</span>
   </div>
-  <div style="display:flex; align-items:center; gap:0.5rem; color:var(--text-muted); font-size:0.9rem;">
-    <i class="material-icons-round">account_circle</i> เจ้าหน้าที่
+  <div class="header-actions">
+    <button class="theme-toggle" onclick="toggleTheme()" title="สลับโหมดสี">
+      <i class="material-icons-round" id="themeIcon">dark_mode</i>
+    </button>
   </div>
 </header>
 
 <div class="container">
-  
-  <div class="stats-grid">
-    <div id="totalTickets">0</div>
-    <div id="openTickets">0</div>
-    <div id="progressTickets">0</div>
-    <div id="doneTickets">0</div>
-  </div>
-
   <div class="main-grid">
     
     <div class="form-card">
@@ -202,20 +232,28 @@ button.btn-primary:hover { background: var(--primary-hover); }
           <label>ผู้แจ้ง (เว้นว่างได้)</label>
           <input id="reporterName" placeholder="ชื่อ หรือ นามแฝง">
         </div>
+        
+        <label class="urgent-box">
+          <input type="checkbox" id="isUrgent"> ด่วนพิเศษ! (เสี่ยงอันตราย)
+        </label>
+
         <button type="submit" class="btn-primary" id="submitBtn">แจ้งปัญหา</button>
       </form>
     </div>
 
     <div class="feed-section">
-      <div class="feed-header">
-        <h2>รายการแจ้งปัญหา</h2>
-      </div>
-      
-      <div class="filter-tabs" id="filterTabs">
-        <button class="filter-btn active" onclick="filterTickets('all', this)">ทั้งหมด</button>
-        <button class="filter-btn" onclick="filterTickets('open', this)">รอรับเรื่อง</button>
-        <button class="filter-btn" onclick="filterTickets('progress', this)">กำลังดำเนินการ</button>
-        <button class="filter-btn" onclick="filterTickets('done', this)">เสร็จสิ้น</button>
+      <div class="feed-tools">
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-btn active" onclick="filterTickets('all', this)">ทั้งหมด</button>
+          <button class="filter-btn" onclick="filterTickets('open', this)">รอรับเรื่อง</button>
+          <button class="filter-btn" onclick="filterTickets('progress', this)">กำลังดำเนินการ</button>
+          <button class="filter-btn" onclick="filterTickets('done', this)">เสร็จสิ้น</button>
+        </div>
+        
+        <div class="search-box">
+          <i class="material-icons-round">search</i>
+          <input type="text" id="searchInput" placeholder="ค้นหาสถานที่, ปัญหา..." onkeyup="handleSearch(this.value)">
+        </div>
       </div>
 
       <div id="ticketList" class="ticket-list"></div>
@@ -224,30 +262,60 @@ button.btn-primary:hover { background: var(--primary-hover); }
   </div>
 </div>
 
-<div id="toast"><i class="material-icons-round" style="color:#4ade80;">check_circle</i> <span>สำเร็จ!</span></div>
+<div id="toast"><i class="material-icons-round">check_circle</i> <span>สำเร็จ!</span></div>
 
 <script>
-const STORAGE_KEY = "ut_smarthelp_traffy_v2"; // เปลี่ยน Key ใหม่ให้เคลียร์ข้อมูลเก่าที่เคยพิมพ์ไว้
+// --- ระบบจัดการ Data ---
+const STORAGE_KEY = "ut_smarthelp_v3_pro";
 let tickets = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 let nextId = tickets.length > 0 ? Math.max(...tickets.map(t => t.rawId)) + 1 : 1;
 let currentFilter = 'all';
+let currentSearch = '';
 
 const categoryMap = { road: 'ถนน', light: 'แสงสว่าง', trash: 'ความสะอาด', water: 'น้ำท่วม/ท่อ', footpath: 'ทางเท้า', other: 'อื่นๆ' };
 const statusMap = { open: 'รอรับเรื่อง', progress: 'กำลังดำเนินการ', done: 'เสร็จสิ้น' };
 
-function updateStatsUI() {
-  document.getElementById("totalTickets").textContent = tickets.length;
-  document.getElementById("openTickets").textContent = tickets.filter(t => t.status === 'open').length;
-  document.getElementById("progressTickets").textContent = tickets.filter(t => t.status === 'progress').length;
-  document.getElementById("doneTickets").textContent = tickets.filter(t => t.status === 'done').length;
+// --- ระบบ Dark Mode ---
+function toggleTheme() {
+  const body = document.body;
+  const icon = document.getElementById("themeIcon");
+  body.classList.toggle("dark-mode");
+  const isDark = body.classList.contains("dark-mode");
+  localStorage.setItem("ut_theme", isDark ? "dark" : "light");
+  icon.textContent = isDark ? "light_mode" : "dark_mode";
+}
+// โหลด Theme ตอนเปิดหน้าเว็บ
+if (localStorage.getItem("ut_theme") === "dark") {
+  document.body.classList.add("dark-mode");
+  document.getElementById("themeIcon").textContent = "light_mode";
 }
 
+// --- ฟังก์ชัน Time Ago (เวลาโซเชียล) ---
+function timeAgo(dateTimestamp) {
+  const seconds = Math.floor((new Date() - new Date(dateTimestamp)) / 1000);
+  let interval = seconds / 86400;
+  if (interval > 1) return Math.floor(interval) + " วันที่แล้ว";
+  interval = seconds / 3600;
+  if (interval > 1) return Math.floor(interval) + " ชม. ที่แล้ว";
+  interval = seconds / 60;
+  if (interval > 1) return Math.floor(interval) + " นาทีที่แล้ว";
+  return "เพิ่งแจ้งเมื่อสักครู่";
+}
+
+// --- UI แจ้งเตือน ---
 function showToast(msg) {
   toast.querySelector('span').textContent = msg;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
+// --- Live Search ---
+function handleSearch(val) {
+  currentSearch = val.toLowerCase();
+  renderTickets();
+}
+
+// --- Filter Tab ---
 function filterTickets(status, btnElement) {
   currentFilter = status;
   document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
@@ -255,25 +323,57 @@ function filterTickets(status, btnElement) {
   renderTickets();
 }
 
+// --- ระบบดันเรื่อง (Upvote) ---
+function toggleUpvote(id, btnElement) {
+  const ticket = tickets.find(t => t.rawId === id);
+  if (ticket) {
+    // จำลองการโหวตสลับไปมา (ถ้ากดแล้วกดอีกคือยกเลิกโหวต)
+    if (!ticket.voted) {
+      ticket.upvotes = (ticket.upvotes || 0) + 1;
+      ticket.voted = true; // Flag สำหรับจำค่าชั่วคราวบนเครื่อง
+      btnElement.classList.add("voted");
+    } else {
+      ticket.upvotes = Math.max((ticket.upvotes || 1) - 1, 0);
+      ticket.voted = false;
+      btnElement.classList.remove("voted");
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
+    btnElement.querySelector('.vote-count').textContent = ticket.upvotes || 0;
+  }
+}
+
+// --- เรนเดอร์ฟีด ---
 function renderTickets() {
   const listEl = document.getElementById("ticketList");
-  const filteredTickets = currentFilter === 'all' 
-    ? tickets 
-    : tickets.filter(t => t.status === currentFilter);
+  
+  // 1. กรองสถานะ และ การค้นหา
+  let filteredTickets = tickets.filter(t => {
+    const matchStatus = currentFilter === 'all' || t.status === currentFilter;
+    const matchSearch = t.problemDesc.toLowerCase().includes(currentSearch) || t.locationText.toLowerCase().includes(currentSearch);
+    return matchStatus && matchSearch;
+  });
+
+  // 2. จัดเรียง: เรื่องด่วนขึ้นก่อน -> ตามด้วยเวลาล่าสุด
+  filteredTickets.sort((a, b) => {
+    if (a.isUrgent === b.isUrgent) return b.createdAt - a.createdAt;
+    return a.isUrgent ? -1 : 1; // ด่วน (true) เอาไว้บน
+  });
 
   if (filteredTickets.length === 0) {
-    listEl.innerHTML = `<div class="empty-state"><i class="material-icons-round">inbox</i><p>ไม่มีรายการในหมวดหมู่นี้</p></div>`;
+    listEl.innerHTML = `<div class="empty-state"><i class="material-icons-round">search_off</i><p>ไม่พบเรื่องร้องเรียน</p></div>`;
     return;
   }
 
   listEl.innerHTML = filteredTickets.map(ticket => {
-    const dateStr = new Date(ticket.createdAt).toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'});
+    const urgentClass = ticket.isUrgent ? 'is-urgent' : '';
+    const upvotes = ticket.upvotes || 0;
+    const votedClass = ticket.voted ? 'voted' : '';
 
     return `
-      <div class="ticket">
+      <div class="ticket ${urgentClass}">
         <div class="t-top">
           <span class="t-id">${ticket.displayId}</span>
-          <span>${dateStr} | ${ticket.reporterName || 'ไม่ระบุชื่อ'}</span>
+          <span><i class="material-icons-round" style="font-size: 0.9rem; vertical-align: middle;">schedule</i> ${timeAgo(ticket.createdAt)} | ${ticket.reporterName || 'ไม่ระบุชื่อ'}</span>
         </div>
         
         <div class="t-desc">${ticket.problemDesc}</div>
@@ -285,30 +385,37 @@ function renderTickets() {
           <span class="tag tag-status ${ticket.status}">${statusMap[ticket.status]}</span>
         </div>
         
-        <div class="status-update-bar">
-           <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);"><i class="material-icons-round" style="font-size: 1rem; vertical-align: middle; margin-right: 0.2rem;">edit_note</i>ปรับสถานะ:</span>
-           <select onchange="updateStatus(${ticket.rawId}, this.value)">
-              <option value="open" ${ticket.status === 'open' ? 'selected' : ''}>รอรับเรื่อง</option>
-              <option value="progress" ${ticket.status === 'progress' ? 'selected' : ''}>กำลังดำเนินการ</option>
-              <option value="done" ${ticket.status === 'done' ? 'selected' : ''}>เสร็จสิ้น</option>
-           </select>
+        <div class="t-footer">
+           <button class="upvote-btn ${votedClass}" onclick="toggleUpvote(${ticket.rawId}, this)">
+             <i class="material-icons-round" style="font-size: 1.1rem;">rocket_launch</i> ดันเรื่อง (<span class="vote-count">${upvotes}</span>)
+           </button>
+           
+           <div class="status-update">
+             <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-right: 0.3rem;">สถานะ:</span>
+             <select onchange="updateStatus(${ticket.rawId}, this.value)">
+                <option value="open" ${ticket.status === 'open' ? 'selected' : ''}>รอรับเรื่อง</option>
+                <option value="progress" ${ticket.status === 'progress' ? 'selected' : ''}>กำลังดำเนินการ</option>
+                <option value="done" ${ticket.status === 'done' ? 'selected' : ''}>เสร็จสิ้น</option>
+             </select>
+           </div>
         </div>
       </div>
     `;
   }).join('');
 }
 
+// --- เปลี่ยนสถานะ ---
 function updateStatus(id, status) {
   const ticket = tickets.find(t => t.rawId === id);
   if (ticket) {
     ticket.status = status;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
-    updateStatsUI();
     renderTickets();
-    showToast("อัปเดตสถานะเรียบร้อย");
+    showToast("เปลี่ยนสถานะเรียบร้อย");
   }
 }
 
+// --- ส่งฟอร์ม ---
 document.getElementById("ticketForm").onsubmit = (e) => {
   e.preventDefault();
   const btn = document.getElementById("submitBtn");
@@ -319,6 +426,7 @@ document.getElementById("ticketForm").onsubmit = (e) => {
   setTimeout(() => {
     const currentYear = new Date().getFullYear();
     const displayId = `#${currentYear}-${String(nextId).padStart(5, '0')}`;
+    const isUrgent = document.getElementById("isUrgent").checked;
 
     tickets.unshift({
       rawId: nextId++,
@@ -328,18 +436,23 @@ document.getElementById("ticketForm").onsubmit = (e) => {
       problemDesc: document.getElementById("problemDesc").value.trim(),
       reporterName: document.getElementById("reporterName").value.trim(),
       status: 'open',
+      isUrgent: isUrgent,
+      upvotes: 0,
+      voted: false,
       createdAt: Date.now()
     });
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
     
+    // Reset ค้นหาและฟิลเตอร์
     currentFilter = 'all';
+    currentSearch = '';
+    document.getElementById("searchInput").value = '';
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.filter-btn')[0].classList.add('active');
 
     renderTickets();
-    updateStatsUI();
-    showToast("รับเรื่องร้องเรียนเรียบร้อยแล้ว!");
+    showToast(isUrgent ? "รับเรื่องด่วนพิเศษแล้ว!" : "รับเรื่องร้องเรียนเรียบร้อย!");
     
     btn.innerHTML = originalText;
     btn.disabled = false;
@@ -347,9 +460,11 @@ document.getElementById("ticketForm").onsubmit = (e) => {
   }, 400);
 };
 
-// เริ่มต้นการทำงาน
+// --- อัปเดตเวลาแบบ Realtime ทุกๆ 1 นาที ให้เวลา Time Ago เดินไปเรื่อยๆ ---
+setInterval(renderTickets, 60000);
+
+// เริ่มต้น
 renderTickets();
-updateStatsUI();
 </script>
 
 </body>
