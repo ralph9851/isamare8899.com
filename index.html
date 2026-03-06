@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>RouteMap Service Desk</title>
+<title>RouteMap | Cyberpunk Edition</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -10,274 +10,287 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons+Round');
 
 :root {
-  --bg-main: #f3f4f6;
-  --bg-card: #ffffff;
-  --text-dark: #111827;
-  --text-muted: #6b7280;
-  --border-color: #e5e7eb;
+  --bg-deep: #050510;
+  --neon-cyan: #00f3ff;
+  --neon-purple: #bc13fe;
+  --neon-pink: #ff007f;
   
-  --primary: #4f46e5;      /* Indigo */
-  --primary-hover: #4338ca;
-  --primary-light: #e0e7ff;
-  
-  --status-open: #ef4444;    /* Red */
-  --status-open-bg: #fee2e2;
-  --status-progress: #f59e0b; /* Amber */
-  --status-progress-bg: #fef3c7;
-  --status-done: #10b981;    /* Emerald */
-  --status-done-bg: #d1fae5;
+  --status-open: #ff003c;
+  --status-progress: #ffaa00;
+  --status-done: #00ff66;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --radius-lg: 16px;
-  --radius-md: 12px;
+  --glass-bg: rgba(20, 25, 45, 0.5);
+  --glass-border: rgba(0, 243, 255, 0.2);
+  --text-main: #ffffff;
+  --text-dim: #8b9bb4;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: 'Prompt', sans-serif;
-  background-color: var(--bg-main);
-  color: var(--text-dark);
-  line-height: 1.5;
+  background-color: var(--bg-deep);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(188, 19, 254, 0.08), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(0, 243, 255, 0.1), transparent 25%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
   padding-bottom: 3rem;
+  overflow-x: hidden;
 }
 
-/* --- Navbar --- */
-.navbar {
-  background-color: var(--bg-card);
-  padding: 1rem 2rem;
-  border-bottom: 1px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: var(--shadow-sm);
+/* --- Background Grid Effect --- */
+body::before {
+  content: ""; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 30px 30px; z-index: -1; pointer-events: none;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--primary);
+/* --- Header --- */
+header {
+  text-align: center; padding: 3rem 1rem 2rem; position: relative;
 }
-
-.brand i { font-size: 1.8rem; }
-.badge-test { background: var(--primary-light); color: var(--primary); padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+header h1 {
+  font-size: 2.8rem; font-weight: 700;
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
+  display: inline-flex; align-items: center; gap: 0.5rem;
+}
+header h1 i {
+  -webkit-text-fill-color: var(--neon-cyan);
+  text-shadow: 0 0 15px var(--neon-cyan);
+  font-size: 2.5rem;
+}
 
 /* --- Layout --- */
-.container { max-width: 1280px; margin: 2rem auto; padding: 0 1.5rem; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
 
-/* --- Stats --- */
+/* --- Stats Top Bar --- */
 .stats-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem;
+  display: flex; justify-content: center; gap: 3rem; margin-bottom: 3rem; flex-wrap: wrap;
 }
-
-.stat-card {
-  background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md);
-  border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);
-  display: flex; align-items: center; justify-content: space-between;
-}
-
-.stat-info h3 { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
-.stat-info .num { font-size: 1.75rem; font-weight: 700; color: var(--text-dark); margin-top: 0.25rem; }
-.stat-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+.stat-item { text-align: center; }
+.stat-item h3 { font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+.stat-item .num { font-size: 2.5rem; font-weight: 700; text-shadow: 0 0 15px currentColor; }
+.num-total { color: var(--neon-cyan); }
+.num-open { color: var(--status-open); }
+.num-progress { color: var(--status-progress); }
+.num-done { color: var(--status-done); }
 
 /* --- Main Grid --- */
-.main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; align-items: start; }
+.main-grid { display: grid; grid-template-columns: 350px 1fr; gap: 2rem; align-items: start; }
+
+/* --- Glassmorphism Card --- */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 243, 255, 0.05);
+  position: relative;
+}
+.glass-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent); opacity: 0.5;
+}
+
+.glass-card h2 {
+  font-size: 1.2rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;
+  color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3);
+}
 
 /* --- Form --- */
-.form-card {
-  background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color); box-shadow: var(--shadow-md);
-  position: sticky; top: 5.5rem;
-}
-
-.form-card h2 { font-size: 1.1rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
-
-.form-group { margin-bottom: 1rem; }
-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-dark); margin-bottom: 0.4rem; }
+.form-group { margin-bottom: 1.25rem; }
+label { display: block; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.5rem; }
 
 input, select, textarea {
-  width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #d1d5db;
-  background-color: #f9fafb; font-family: inherit; font-size: 0.9rem; color: var(--text-dark); transition: all 0.2s;
+  width: 100%; padding: 0.85rem 1rem; border-radius: 10px;
+  background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main); font-family: inherit; font-size: 0.95rem;
+  transition: all 0.3s ease;
 }
-
 input:focus, select:focus, textarea:focus {
-  outline: none; border-color: var(--primary); background-color: #fff; box-shadow: 0 0 0 3px var(--primary-light);
+  outline: none; border-color: var(--neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+  background: rgba(0, 243, 255, 0.05);
 }
+select option { background: var(--bg-deep); color: white; }
 
 button[type="submit"] {
-  width: 100%; padding: 0.875rem; border-radius: 8px; border: none; background: var(--primary); color: white;
-  font-weight: 600; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: background 0.2s; margin-top: 1.5rem;
+  width: 100%; padding: 1rem; border-radius: 10px; border: none; margin-top: 1rem;
+  background: linear-gradient(45deg, var(--neon-purple), var(--neon-cyan));
+  color: white; font-weight: 700; font-size: 1rem; letter-spacing: 1px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  box-shadow: 0 0 20px rgba(188, 19, 254, 0.4); transition: all 0.3s; text-transform: uppercase;
 }
-button[type="submit"]:hover { background: var(--primary-hover); }
+button[type="submit"]:hover {
+  transform: translateY(-2px); box-shadow: 0 0 30px rgba(0, 243, 255, 0.6);
+}
 
 /* --- Tickets List --- */
-.list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.list-header h2 { font-size: 1.25rem; font-weight: 600; }
+.ticket-list { display: flex; flex-direction: column; gap: 1rem; }
 
 .ticket {
-  background: var(--bg-card); border-radius: var(--radius-md); margin-bottom: 1rem;
-  border: 1px solid var(--border-color); border-left: 5px solid var(--border-color);
-  box-shadow: var(--shadow-sm); padding: 1.25rem; transition: transform 0.2s, box-shadow 0.2s;
+  background: rgba(10, 15, 30, 0.6); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.05); border-radius: 16px;
+  padding: 1.25rem; position: relative; overflow: hidden;
+  transition: all 0.3s;
+}
+.ticket:hover { transform: translateX(5px); background: rgba(20, 25, 45, 0.8); }
+
+/* Neon Glow Indicators */
+.ticket::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+  box-shadow: 0 0 15px currentColor;
+}
+.ticket[data-status="open"] { border-color: rgba(255, 0, 60, 0.2); }
+.ticket[data-status="open"]::before { background: var(--status-open); color: var(--status-open); }
+
+.ticket[data-status="progress"] { border-color: rgba(255, 170, 0, 0.2); }
+.ticket[data-status="progress"]::before { background: var(--status-progress); color: var(--status-progress); }
+
+.ticket[data-status="done"] { border-color: rgba(0, 255, 102, 0.2); }
+.ticket[data-status="done"]::before { background: var(--status-done); color: var(--status-done); }
+
+.ticket-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+.ticket-category { font-weight: 600; font-size: 1.1rem; color: #fff; }
+.ticket-id { font-size: 0.75rem; color: var(--text-dim); background: rgba(0,0,0,0.5); padding: 0.2rem 0.6rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+
+.ticket-vehicle {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: rgba(0, 243, 255, 0.1); color: var(--neon-cyan);
+  padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.85rem; font-weight: 500;
+  border: 1px solid rgba(0, 243, 255, 0.3); margin-bottom: 0.75rem; text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
 }
 
-.ticket:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.ticket-desc { color: #d1d5db; font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.25rem; }
 
-.ticket[data-status="open"] { border-left-color: var(--status-open); }
-.ticket[data-status="progress"] { border-left-color: var(--status-progress); }
-.ticket[data-status="done"] { border-left-color: var(--status-done); }
+.ticket-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem; }
+.ticket-meta { font-size: 0.8rem; color: var(--text-dim); display: flex; gap: 1rem; }
+.ticket-meta span { display: flex; align-items: center; gap: 0.3rem; }
 
-.ticket-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
-.ticket-title { font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-.ticket-id { font-size: 0.75rem; color: var(--text-muted); background: var(--bg-main); padding: 0.2rem 0.5rem; border-radius: 4px; font-family: monospace; }
-
-.vehicle-badge { display: inline-flex; align-items: center; gap: 0.3rem; background: #e0f2fe; color: #0284c7; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500; margin-bottom: 0.75rem; }
-
-.ticket-desc { color: var(--text-dark); font-size: 0.9rem; margin-bottom: 1rem; background: #f9fafb; padding: 0.75rem; border-radius: 6px; border: 1px solid #f3f4f6; }
-
-.ticket-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 1rem; }
-.ticket-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; gap: 1rem; }
-.ticket-meta span { display: flex; align-items: center; gap: 0.25rem; }
-
-/* Status Dropdown Pill */
+/* Status Dropdown Cyber */
 .status-select {
-  padding: 0.4rem 2rem 0.4rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: none; cursor: pointer;
-  appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  padding: 0.4rem 2rem 0.4rem 1rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat; background-position: right 0.5rem center; background-size: 1em;
+  border: 1px solid transparent; transition: all 0.3s;
 }
 
-.status-open-style { background-color: var(--status-open-bg); color: #b91c1c; }
-.status-progress-style { background-color: var(--status-progress-bg); color: #b45309; }
-.status-done-style { background-color: var(--status-done-bg); color: #047857; }
+.ticket[data-status="open"] .status-select { background-color: rgba(255, 0, 60, 0.15); color: #ff4d79; border-color: rgba(255, 0, 60, 0.3); text-shadow: 0 0 5px rgba(255, 0, 60, 0.5); }
+.ticket[data-status="progress"] .status-select { background-color: rgba(255, 170, 0, 0.15); color: #ffd166; border-color: rgba(255, 170, 0, 0.3); text-shadow: 0 0 5px rgba(255, 170, 0, 0.5); }
+.ticket[data-status="done"] .status-select { background-color: rgba(0, 255, 102, 0.15); color: #66ffb3; border-color: rgba(0, 255, 102, 0.3); text-shadow: 0 0 5px rgba(0, 255, 102, 0.5); }
 
 /* --- Utils --- */
-.empty-state { text-align: center; padding: 3rem; background: var(--bg-card); border-radius: var(--radius-md); border: 1px dashed var(--border-color); color: var(--text-muted); }
-.empty-state i { font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem; }
-#toast { position: fixed; bottom: 20px; center: 0; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text-dark); color: white; padding: 0.75rem 1.5rem; border-radius: 30px; display: flex; align-items: center; gap: 0.5rem; opacity: 0; transition: all 0.3s ease; z-index: 1000; box-shadow: var(--shadow-md); }
-#toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-dim); }
+.empty-state i { font-size: 3rem; opacity: 0.5; margin-bottom: 1rem; }
+#toast { position: fixed; bottom: 20px; right: 20px; background: rgba(0, 255, 102, 0.2); border: 1px solid var(--status-done); color: #fff; padding: 1rem 1.5rem; border-radius: 10px; backdrop-filter: blur(10px); display: flex; align-items: center; gap: 0.5rem; transform: translateX(150%); opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 1000; box-shadow: 0 0 20px rgba(0, 255, 102, 0.3); text-shadow: 0 0 5px rgba(0,255,102,0.8); }
+#toast.show { transform: translateX(0); opacity: 1; }
 .spin { animation: spin 1s linear infinite; }
 @keyframes spin { 100% { transform: rotate(360deg); } }
 
 @media (max-width: 900px) {
   .main-grid { grid-template-columns: 1fr; }
-  .form-card { position: static; margin-bottom: 2rem; }
-  .ticket-bottom { flex-direction: column; align-items: flex-start; gap: 1rem; }
-  .status-select { width: 100%; }
+  .stats-grid { gap: 1.5rem; }
+  .glass-card { position: static; }
+  header h1 { font-size: 2rem; }
 }
 </style>
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="brand">
-    <i class="material-icons-round">route</i> RouteMap Desk
-    <span class="badge-test">Local Test</span>
-  </div>
-  <div style="display:flex; align-items:center; gap:0.5rem; color:var(--text-muted); font-size:0.9rem;">
-    <i class="material-icons-round">account_circle</i> User_Admin
-  </div>
-</nav>
+<header>
+  <h1><i class="material-icons-round">build_circle</i> SYS_ROUTEMAP</h1>
+  <p style="color: var(--text-dim); margin-top: 0.5rem; letter-spacing: 1px;">[ DIAGNOSTIC & TRACKING NETWORK ]</p>
+</header>
 
 <div class="container">
   
   <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-info">
-        <h3>ทั้งหมด</h3>
-        <div class="num" id="totalTickets">0</div>
-      </div>
-      <div class="stat-icon" style="background: #f1f5f9; color: #64748b;"><i class="material-icons-round">tag</i></div>
+    <div class="stat-item">
+      <h3>TOTAL TICKETS</h3>
+      <div class="num num-total" id="totalTickets">0</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-info">
-        <h3>รอแก้ไข</h3>
-        <div class="num" id="openTickets" style="color: var(--status-open);">0</div>
-      </div>
-      <div class="stat-icon" style="background: var(--status-open-bg); color: var(--status-open);"><i class="material-icons-round">error_outline</i></div>
+    <div class="stat-item">
+      <h3>WAITING</h3>
+      <div class="num num-open" id="openTickets">0</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-info">
-        <h3>กำลังทำ</h3>
-        <div class="num" id="progressTickets" style="color: var(--status-progress);">0</div>
-      </div>
-      <div class="stat-icon" style="background: var(--status-progress-bg); color: var(--status-progress);"><i class="material-icons-round">autorenew</i></div>
+    <div class="stat-item">
+      <h3>IN PROGRESS</h3>
+      <div class="num num-progress" id="progressTickets">0</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-info">
-        <h3>เสร็จสิ้น</h3>
-        <div class="num" id="doneTickets" style="color: var(--status-done);">0</div>
-      </div>
-      <div class="stat-icon" style="background: var(--status-done-bg); color: var(--status-done);"><i class="material-icons-round">check_circle_outline</i></div>
+    <div class="stat-item">
+      <h3>RESOLVED</h3>
+      <div class="num num-done" id="doneTickets">0</div>
     </div>
   </div>
 
   <div class="main-grid">
     
-    <div class="form-card">
-      <h2><i class="material-icons-round" style="color: var(--primary);">add_box</i> สร้างรายการใหม่</h2>
+    <div class="glass-card" style="position: sticky; top: 2rem; height: fit-content;">
+      <h2><i class="material-icons-round" style="color: var(--neon-cyan);">add_task</i> แจ้งปัญหาใหม่</h2>
       <form id="ticketForm">
         <div class="form-group">
-          <label>ผู้แจ้ง / เขตพื้นที่</label>
-          <input id="reporter" placeholder="ระบุชื่อผู้แจ้ง" required>
+          <label>รหัสผู้แจ้ง / ชื่อ</label>
+          <input id="reporter" placeholder="ระบุตัวตน" required>
         </div>
         <div class="form-group">
-          <label>ทะเบียนรถ</label>
+          <label>ป้ายทะเบียนรถ</label>
           <input id="vehicle" placeholder="เช่น 65-7233" required>
         </div>
         <div class="form-group">
-          <label>ประเภทปัญหา</label>
+          <label>ประเภทข้อผิดพลาด</label>
           <select id="category" required>
-            <option value="" disabled selected>-- เลือกประเภท --</option>
-            <option value="gps">สัญญาณ GPS หาย / ไม่ขยับ</option>
-            <option value="data">ข้อมูลรถ / พขร. ไม่ถูกต้อง</option>
-            <option value="system">ระบบค้าง / เข้าใช้งานไม่ได้</option>
-            <option value="other">ปัญหาอื่นๆ</option>
+            <option value="" disabled selected>-- ตรวจสอบระบบ --</option>
+            <option value="hardware">ฮาร์ดแวร์ / สัญญาณ GPS ขาดหาย</option>
+            <option value="software">ซอฟต์แวร์ / ข้อมูล พขร. ผิดพลาด</option>
+            <option value="network">เครือข่าย / เชื่อมต่อ Server ไม่ได้</option>
+            <option value="unknown">ข้อผิดพลาดอื่นๆ (Unknown)</option>
           </select>
         </div>
         <div class="form-group">
-          <label>รายละเอียด</label>
-          <textarea id="problem" rows="3" placeholder="ระบุอาการเพิ่มเติม..." required></textarea>
+          <label>รายละเอียด (LOG)</label>
+          <textarea id="problem" rows="3" placeholder="ระบุอาการ..." required></textarea>
         </div>
-        <button type="submit" id="submitBtn">บันทึกข้อมูล</button>
+        <button type="submit" id="submitBtn">ส่งคำขอรับบริการ</button>
       </form>
     </div>
 
-    <div class="list-section">
-      <div class="list-header">
-        <h2>รายการล่าสุด</h2>
+    <div class="glass-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
+        <h2 style="margin: 0; border: none; padding: 0;"><i class="material-icons-round" style="color: var(--neon-purple);">list_alt</i> รายการเข้าคิว</h2>
       </div>
-      <div id="ticketList"></div>
+      
+      <div id="ticketList" class="ticket-list"></div>
     </div>
 
   </div>
 </div>
 
-<div id="toast"><i class="material-icons-round" style="color:#4ade80;">check_circle</i> <span>สำเร็จ!</span></div>
+<div id="toast"><i class="material-icons-round">check_circle</i> <span>บันทึกข้อมูลเข้าสู่ระบบสำเร็จ!</span></div>
 
 <script>
-// --- ส่วน Logic (เหมือนเดิม แต่ปรับ Class ให้ตรงกับ CSS ใหม่) ---
+// Logic ทำงานจำลองผ่านเบราว์เซอร์ (LocalStorage) 
 const form = document.getElementById("ticketForm");
 const submitBtn = document.getElementById("submitBtn");
 const ticketList = document.getElementById("ticketList");
 const toast = document.getElementById("toast");
 
-const STORAGE_KEY = "routemap_modern_test";
+const STORAGE_KEY = "routemap_cyber_test";
 let tickets = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 let nextId = tickets.length > 0 ? Math.max(...tickets.map(t => t.id)) + 1 : 1;
 
-const categoryMap = { gps: 'สัญญาณ GPS', data: 'ข้อมูลรถ/พขร.', system: 'ระบบมีปัญหา', other: 'อื่นๆ' };
-
-function getStatusStyle(status) {
-  if(status === 'open') return 'status-open-style';
-  if(status === 'progress') return 'status-progress-style';
-  return 'status-done-style';
-}
+const categoryMap = { 
+  hardware: 'ฮาร์ดแวร์ / สัญญาณ GPS', 
+  software: 'ซอฟต์แวร์ / ข้อมูล พขร.', 
+  network: 'เครือข่าย / เชื่อมต่อ', 
+  unknown: 'ข้อผิดพลาดอื่นๆ' 
+};
 
 function updateStatsUI() {
   document.getElementById("totalTickets").textContent = tickets.length;
@@ -294,34 +307,32 @@ function showToast(msg) {
 
 function renderTickets() {
   if (tickets.length === 0) {
-    ticketList.innerHTML = `<div class="empty-state"><i class="material-icons-round">inbox</i><p>ยังไม่มีรายการแจ้งปัญหา</p></div>`;
+    ticketList.innerHTML = `<div class="empty-state"><i class="material-icons-round">data_array</i><p>NO DATA FOUND / ระบบว่างเปล่า</p></div>`;
     return;
   }
 
   ticketList.innerHTML = tickets.map(ticket => `
     <div class="ticket" data-status="${ticket.status}">
-      <div class="ticket-top">
-        <div class="ticket-title">
-          ${categoryMap[ticket.category] || ticket.category}
-        </div>
-        <div class="ticket-id">#TKT-${String(ticket.id).padStart(4, '0')}</div>
+      <div class="ticket-header">
+        <div class="ticket-category">${categoryMap[ticket.category] || ticket.category}</div>
+        <div class="ticket-id">#SYS-${String(ticket.id).padStart(4, '0')}</div>
       </div>
       
-      <div class="vehicle-badge">
+      <div class="ticket-vehicle">
         <i class="material-icons-round" style="font-size: 1rem;">directions_car</i> ${ticket.vehicle}
       </div>
       
       <div class="ticket-desc">${ticket.problem}</div>
       
-      <div class="ticket-bottom">
+      <div class="ticket-footer">
         <div class="ticket-meta">
-          <span><i class="material-icons-round" style="font-size: 1rem;">person</i> ${ticket.reporter}</span>
+          <span><i class="material-icons-round" style="font-size: 1rem;">terminal</i> ${ticket.reporter}</span>
           <span><i class="material-icons-round" style="font-size: 1rem;">schedule</i> ${new Date(ticket.createdAt).toLocaleDateString('th-TH', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</span>
         </div>
         
-        <select class="status-select ${getStatusStyle(ticket.status)}" onchange="updateStatus(${ticket.id}, this.value, this)">
-          <option value="open" ${ticket.status === 'open' ? 'selected' : ''}>รอแก้ไข</option>
-          <option value="progress" ${ticket.status === 'progress' ? 'selected' : ''}>กำลังทำ</option>
+        <select class="status-select" onchange="updateStatus(${ticket.id}, this.value, this)">
+          <option value="open" ${ticket.status === 'open' ? 'selected' : ''}>รอการแก้ไข</option>
+          <option value="progress" ${ticket.status === 'progress' ? 'selected' : ''}>กำลังดำเนินการ</option>
           <option value="done" ${ticket.status === 'done' ? 'selected' : ''}>เสร็จสิ้น</option>
         </select>
       </div>
@@ -335,7 +346,6 @@ function updateStatus(id, status, selectEl) {
     ticket.status = status;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
     selectEl.closest('.ticket').setAttribute('data-status', status);
-    selectEl.className = `status-select ${getStatusStyle(status)}`;
     updateStatsUI();
   }
 }
@@ -343,7 +353,7 @@ function updateStatus(id, status, selectEl) {
 form.onsubmit = (e) => {
   e.preventDefault();
   const originalText = submitBtn.innerHTML;
-  submitBtn.innerHTML = `<i class="material-icons-round spin">sync</i> กำลังบันทึก...`;
+  submitBtn.innerHTML = `<i class="material-icons-round spin">sync</i> UPLOADING...`;
   submitBtn.disabled = true;
   
   setTimeout(() => {
@@ -360,15 +370,15 @@ form.onsubmit = (e) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
     renderTickets();
     updateStatsUI();
-    showToast("บันทึกข้อมูลสำเร็จ");
+    showToast("บันทึกข้อมูลเข้าสู่ระบบสำเร็จ!");
     
     submitBtn.innerHTML = originalText;
     submitBtn.disabled = false;
     form.reset();
-  }, 400);
+  }, 600);
 };
 
-// Initial load
+// โหลดครั้งแรก
 renderTickets();
 updateStatsUI();
 </script>
