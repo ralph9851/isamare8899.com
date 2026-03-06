@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>RouteMap & GPS Helpdesk (Test Version)</title>
+<title>RouteMap Service Desk</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -10,468 +10,367 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons+Round');
 
 :root {
-  --bg-dark: #00172e;
-  --glass-bg: rgba(0, 51, 102, 0.4);
-  --glass-hover: rgba(0, 68, 136, 0.6);
-  --border-light: rgba(255, 255, 255, 0.15);
-  --border-focus: rgba(255, 205, 0, 0.5); 
+  --bg-main: #f3f4f6;
+  --bg-card: #ffffff;
+  --text-dark: #111827;
+  --text-muted: #6b7280;
+  --border-color: #e5e7eb;
   
-  --text-main: #f8fafc;
-  --text-sec: #cbd5e1;
-  --text-muted: #94a3b8;
-
-  --primary: #005293; 
-  --primary-hover: #00427a;
-  --accent-yellow: #FFCD00; 
+  --primary: #4f46e5;      /* Indigo */
+  --primary-hover: #4338ca;
+  --primary-light: #e0e7ff;
   
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
+  --status-open: #ef4444;    /* Red */
+  --status-open-bg: #fee2e2;
+  --status-progress: #f59e0b; /* Amber */
+  --status-progress-bg: #fef3c7;
+  --status-done: #10b981;    /* Emerald */
+  --status-done-bg: #d1fae5;
 
-  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-  --glow: 0 0 20px rgba(0, 82, 147, 0.4);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --radius-lg: 16px;
+  --radius-md: 12px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: 'Prompt', sans-serif;
-  background-color: var(--bg-dark);
-  background-image: 
-    radial-gradient(at 0% 0%, #002244 0px, transparent 50%),
-    radial-gradient(at 100% 0%, #004080 0px, transparent 50%),
-    radial-gradient(at 100% 100%, #001a33 0px, transparent 50%),
-    radial-gradient(at 0% 100%, #003366 0px, transparent 50%);
-  background-attachment: fixed;
-  color: var(--text-main);
-  min-height: 100vh;
-  line-height: 1.6;
+  background-color: var(--bg-main);
+  color: var(--text-dark);
+  line-height: 1.5;
+  padding-bottom: 3rem;
 }
 
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
-
-header { padding: 3rem 1rem 1.5rem; text-align: center; position: relative; animation: fadeInDown 0.8s ease; }
-
-header h1 {
-  font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; display: inline-flex; align-items: center; gap: 0.75rem;
-  background: linear-gradient(to right, #93c5fd, #ffffff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+/* --- Navbar --- */
+.navbar {
+  background-color: var(--bg-card);
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
 }
 
-header h1 i { color: var(--accent-yellow); -webkit-text-fill-color: initial; font-size: 2.5rem; text-shadow: 0 0 15px rgba(255, 205, 0, 0.3); }
-header p { color: var(--text-sec); font-size: 1.1rem; }
-
-.container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 3rem; }
-
-.stats-toggle-container { text-align: center; margin-bottom: 2rem; animation: fadeInDown 0.8s ease 0.2s both; }
-
-.stats-toggle-btn {
-  background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-light); color: var(--text-sec);
-  padding: 0.5rem 1.5rem; border-radius: 50px; cursor: pointer; font-family: inherit; font-size: 0.95rem;
-  display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
 }
 
-.stats-toggle-btn:hover { background: var(--glass-hover); color: var(--text-main); border-color: var(--border-focus); transform: translateY(-2px); }
-.stats-toggle-btn.active i.chevron { transform: rotate(180deg); }
+.brand i { font-size: 1.8rem; }
+.badge-test { background: var(--primary-light); color: var(--primary); padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
 
-.stats-wrapper { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.5s cubic-bezier(0, 1, 0, 1), opacity 0.4s ease-in-out; }
-.stats-wrapper.show { max-height: 800px; opacity: 1; transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out 0.1s; margin-bottom: 2.5rem; }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; padding-top: 0.5rem; }
+/* --- Layout --- */
+.container { max-width: 1280px; margin: 2rem auto; padding: 0 1.5rem; }
+
+/* --- Stats --- */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem;
+}
 
 .stat-card {
-  background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-light);
-  border-radius: 20px; padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md);
+  border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);
+  display: flex; align-items: center; justify-content: space-between;
 }
-.stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); background: var(--glass-hover); }
-.stat-icon { width: 50px; height: 50px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-.stat-info h3 { font-size: 0.9rem; color: var(--text-sec); font-weight: 500; }
-.stat-number { font-size: 1.8rem; font-weight: 700; line-height: 1.2; }
 
-.dashboard-grid { display: grid; grid-template-columns: 350px 1fr; gap: 2rem; animation: fadeInUp 0.8s ease 0.4s both; }
-.card { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--border-light); border-radius: 24px; padding: 2rem; box-shadow: var(--shadow-lg); display: flex; flex-direction: column; }
-.card h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: var(--text-main); padding-bottom: 1rem; border-bottom: 1px solid var(--border-light); }
-.sticky-form-container { height: fit-content; position: sticky; top: 2rem; }
+.stat-info h3 { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-info .num { font-size: 1.75rem; font-weight: 700; color: var(--text-dark); margin-top: 0.25rem; }
+.stat-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 
-.form-group { margin-bottom: 1.25rem; }
-label { display: block; font-size: 0.9rem; font-weight: 500; color: var(--text-sec); margin-bottom: 0.5rem; }
+/* --- Main Grid --- */
+.main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; align-items: start; }
+
+/* --- Form --- */
+.form-card {
+  background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color); box-shadow: var(--shadow-md);
+  position: sticky; top: 5.5rem;
+}
+
+.form-card h2 { font-size: 1.1rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
+
+.form-group { margin-bottom: 1rem; }
+label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-dark); margin-bottom: 0.4rem; }
 
 input, select, textarea {
-  width: 100%; padding: 0.875rem 1rem; border-radius: 12px; background: rgba(0, 20, 40, 0.5); 
-  border: 1px solid var(--border-light); color: var(--text-main); font-size: 0.95rem; font-family: inherit; transition: all 0.3s ease;
+  width: 100%; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #d1d5db;
+  background-color: #f9fafb; font-family: inherit; font-size: 0.9rem; color: var(--text-dark); transition: all 0.2s;
 }
 
-input:focus, select:focus, textarea:focus { outline: none; border-color: var(--border-focus); background: rgba(0, 30, 60, 0.8); box-shadow: 0 0 0 3px rgba(255, 205, 0, 0.15); }
-select option { background-color: #003366; color: #ffffff; }
+input:focus, select:focus, textarea:focus {
+  outline: none; border-color: var(--primary); background-color: #fff; box-shadow: 0 0 0 3px var(--primary-light);
+}
 
 button[type="submit"] {
-  width: 100%; padding: 1rem; border-radius: 12px; border: none; cursor: pointer; font-weight: 600;
-  font-size: 1rem; background: linear-gradient(135deg, var(--primary), var(--primary-hover));
-  color: white; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.3s ease; margin-top: 1rem;
+  width: 100%; padding: 0.875rem; border-radius: 8px; border: none; background: var(--primary); color: white;
+  font-weight: 600; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: background 0.2s; margin-top: 1.5rem;
 }
-button[type="submit"]:hover { transform: translateY(-2px); box-shadow: var(--glow); }
+button[type="submit"]:hover { background: var(--primary-hover); }
 
-.tickets-container { max-height: 600px; overflow-y: auto; padding-right: 1rem; padding-left: 1.5rem; position: relative; }
-.tickets-container::before { content: ''; position: absolute; top: 10px; bottom: 0; left: 6px; width: 2px; background: var(--border-light); border-radius: 2px; z-index: 0; }
+/* --- Tickets List --- */
+.list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.list-header h2 { font-size: 1.25rem; font-weight: 600; }
 
-.ticket { position: relative; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-light); border-radius: 16px; padding: 1.25rem; margin-bottom: 1.5rem; transition: all 0.3s ease; animation: slideIn 0.4s ease; z-index: 1; }
-.ticket:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.2); transform: translateX(5px); }
-.ticket::before { content: ''; position: absolute; top: 1.5rem; left: -1.5rem; width: 14px; height: 14px; border-radius: 50%; background: var(--bg-dark); border: 3px solid #cbd5e1; transform: translateX(-50%); z-index: 2; transition: all 0.3s ease; }
+.ticket {
+  background: var(--bg-card); border-radius: var(--radius-md); margin-bottom: 1rem;
+  border: 1px solid var(--border-color); border-left: 5px solid var(--border-color);
+  box-shadow: var(--shadow-sm); padding: 1.25rem; transition: transform 0.2s, box-shadow 0.2s;
+}
 
-.ticket[data-status="open"]::before { border-color: var(--danger); box-shadow: 0 0 10px rgba(239, 68, 68, 0.6); animation: pulse-danger 2s infinite; }
-.ticket[data-status="progress"]::before { border-color: var(--warning); box-shadow: 0 0 10px rgba(245, 158, 11, 0.6); animation: pulse-warning 2s infinite; }
-.ticket[data-status="done"]::before { border-color: var(--success); box-shadow: 0 0 8px rgba(16, 185, 129, 0.4); }
+.ticket:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 
-.ticket-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
-.ticket-title-wrapper { display: flex; flex-direction: column; }
-.ticket-category { font-weight: 600; color: var(--text-main); font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; }
-.ticket-id { color: var(--text-muted); font-size: 0.75rem; font-family: monospace; margin-top: 0.2rem; }
-.ticket-desc { color: var(--text-sec); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem; background: rgba(0, 0, 0, 0.15); padding: 0.75rem 1rem; border-radius: 8px; border-left: 3px solid transparent; margin-top: 0.5rem; }
+.ticket[data-status="open"] { border-left-color: var(--status-open); }
+.ticket[data-status="progress"] { border-left-color: var(--status-progress); }
+.ticket[data-status="done"] { border-left-color: var(--status-done); }
 
-.ticket[data-status="open"] .ticket-desc { border-left-color: var(--danger); }
-.ticket[data-status="progress"] .ticket-desc { border-left-color: var(--warning); }
-.ticket[data-status="done"] .ticket-desc { border-left-color: var(--success); }
+.ticket-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+.ticket-title { font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+.ticket-id { font-size: 0.75rem; color: var(--text-muted); background: var(--bg-main); padding: 0.2rem 0.5rem; border-radius: 4px; font-family: monospace; }
 
-.ticket-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-.ticket-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 1.25rem; }
-.ticket-meta span { display: flex; align-items: center; gap: 0.35rem; }
+.vehicle-badge { display: inline-flex; align-items: center; gap: 0.3rem; background: #e0f2fe; color: #0284c7; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500; margin-bottom: 0.75rem; }
 
+.ticket-desc { color: var(--text-dark); font-size: 0.9rem; margin-bottom: 1rem; background: #f9fafb; padding: 0.75rem; border-radius: 6px; border: 1px solid #f3f4f6; }
+
+.ticket-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 1rem; }
+.ticket-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; gap: 1rem; }
+.ticket-meta span { display: flex; align-items: center; gap: 0.25rem; }
+
+/* Status Dropdown Pill */
 .status-select {
-  padding: 0.4rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border: 1px solid transparent;
+  padding: 0.4rem 2rem 0.4rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: none; cursor: pointer;
   appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat; background-position: right 0.5rem center; background-size: 1em; padding-right: 2rem;
+  background-repeat: no-repeat; background-position: right 0.5rem center; background-size: 1em;
 }
 
-.status-open-bg { background-color: rgba(239,68,68,0.15); color: #fca5a5; }
-.status-progress-bg { background-color: rgba(245,158,11,0.15); color: #fcd34d; }
-.status-done-bg { background-color: rgba(16,185,129,0.15); color: #6ee7b7; }
+.status-open-style { background-color: var(--status-open-bg); color: #b91c1c; }
+.status-progress-style { background-color: var(--status-progress-bg); color: #b45309; }
+.status-done-style { background-color: var(--status-done-bg); color: #047857; }
 
-.load-more-container { text-align: center; margin-top: 1rem; padding-top: 1rem; }
-.load-more-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-light); color: var(--text-sec); padding: 0.6rem 1.5rem; border-radius: 50px; cursor: pointer; font-family: inherit; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease; }
-.load-more-btn:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-main); border-color: var(--border-focus); }
-.empty-state { text-align: center; padding: 4rem 1rem; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; }
-.empty-state i { font-size: 4rem; margin-bottom: 1rem; background: linear-gradient(to bottom, var(--text-muted), transparent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-@keyframes spin { 100% { transform: rotate(360deg); } }
+/* --- Utils --- */
+.empty-state { text-align: center; padding: 3rem; background: var(--bg-card); border-radius: var(--radius-md); border: 1px dashed var(--border-color); color: var(--text-muted); }
+.empty-state i { font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem; }
+#toast { position: fixed; bottom: 20px; center: 0; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text-dark); color: white; padding: 0.75rem 1.5rem; border-radius: 30px; display: flex; align-items: center; gap: 0.5rem; opacity: 0; transition: all 0.3s ease; z-index: 1000; box-shadow: var(--shadow-md); }
+#toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 .spin { animation: spin 1s linear infinite; }
-@keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes slideIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes pulse-danger { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
-@keyframes pulse-warning { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
+@keyframes spin { 100% { transform: rotate(360deg); } }
 
 @media (max-width: 900px) {
-  .dashboard-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-  .sticky-form-container { position: static; height: auto; }
-  .tickets-container { max-height: none; overflow-y: visible; }
-  .tickets-container::before { left: 2px; }
-  .ticket { padding: 1rem; margin-left: -0.5rem; }
-  .ticket::before { left: -1rem; }
-  .ticket:hover { transform: none; }
-  header { padding: 2rem 1rem 1rem; }
-  header h1 { font-size: 1.8rem; }
+  .main-grid { grid-template-columns: 1fr; }
+  .form-card { position: static; margin-bottom: 2rem; }
+  .ticket-bottom { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .status-select { width: 100%; }
 }
-
-#toast { position: fixed; bottom: 20px; right: 20px; background: var(--success); color: white; padding: 1rem 1.5rem; border-radius: 12px; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 0.5rem; transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 1000; }
-#toast.show { transform: translateY(0); opacity: 1; }
 </style>
 </head>
-
 <body>
 
-<header>
-  <h1><i class="material-icons-round">local_shipping</i> RouteMap Test Mode</h1>
-  <p>ระบบรับแจ้งปัญหาข้อมูลรถ (เวอร์ชันทดสอบ ไม่ต่อฐานข้อมูล)</p>
-</header>
+<nav class="navbar">
+  <div class="brand">
+    <i class="material-icons-round">route</i> RouteMap Desk
+    <span class="badge-test">Local Test</span>
+  </div>
+  <div style="display:flex; align-items:center; gap:0.5rem; color:var(--text-muted); font-size:0.9rem;">
+    <i class="material-icons-round">account_circle</i> User_Admin
+  </div>
+</nav>
 
 <div class="container">
-
-  <div class="stats-toggle-container">
-    <button id="toggleStatsBtn" class="stats-toggle-btn">
-      <i class="material-icons-round">analytics</i> 
-      <span id="toggleText">แสดงสถิติภาพรวม</span> 
-      <i class="material-icons-round chevron">expand_more</i>
-    </button>
-  </div>
   
-  <div id="statsWrapper" class="stats-wrapper show">
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(255, 205, 0, 0.2); color: var(--accent-yellow);">
-          <i class="material-icons-round">analytics</i>
-        </div>
-        <div class="stat-info">
-          <h3>รายการแจ้งทั้งหมด</h3>
-          <div class="stat-number" id="totalTickets">0</div>
-        </div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>ทั้งหมด</h3>
+        <div class="num" id="totalTickets">0</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.2); color: #fca5a5;">
-          <i class="material-icons-round">new_releases</i>
-        </div>
-        <div class="stat-info">
-          <h3>รอดำเนินการ</h3>
-          <div class="stat-number" id="openTickets" style="color: #fca5a5;">0</div>
-        </div>
+      <div class="stat-icon" style="background: #f1f5f9; color: #64748b;"><i class="material-icons-round">tag</i></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>รอแก้ไข</h3>
+        <div class="num" id="openTickets" style="color: var(--status-open);">0</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.2); color: #fcd34d;">
-          <i class="material-icons-round">satellite_alt</i>
-        </div>
-        <div class="stat-info">
-          <h3>กำลังตรวจสอบ GPS</h3>
-          <div class="stat-number" id="progressTickets" style="color: #fcd34d;">0</div>
-        </div>
+      <div class="stat-icon" style="background: var(--status-open-bg); color: var(--status-open);"><i class="material-icons-round">error_outline</i></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>กำลังทำ</h3>
+        <div class="num" id="progressTickets" style="color: var(--status-progress);">0</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7;">
-          <i class="material-icons-round">task_alt</i>
-        </div>
-        <div class="stat-info">
-          <h3>แก้ไขเสร็จสิ้น</h3>
-          <div class="stat-number" id="doneTickets" style="color: #6ee7b7;">0</div>
-        </div>
+      <div class="stat-icon" style="background: var(--status-progress-bg); color: var(--status-progress);"><i class="material-icons-round">autorenew</i></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-info">
+        <h3>เสร็จสิ้น</h3>
+        <div class="num" id="doneTickets" style="color: var(--status-done);">0</div>
       </div>
+      <div class="stat-icon" style="background: var(--status-done-bg); color: var(--status-done);"><i class="material-icons-round">check_circle_outline</i></div>
     </div>
   </div>
 
-  <div class="dashboard-grid">
-    <div class="card sticky-form-container">
-      <h2><i class="material-icons-round">add_location_alt</i> แจ้งปัญหา RouteMap</h2>
+  <div class="main-grid">
+    
+    <div class="form-card">
+      <h2><i class="material-icons-round" style="color: var(--primary);">add_box</i> สร้างรายการใหม่</h2>
       <form id="ticketForm">
         <div class="form-group">
-          <label>ชื่อผู้แจ้ง / เขตพื้นที่</label>
-          <input id="reporter" placeholder="เช่น พี่วิ เขตบางแค" required>
+          <label>ผู้แจ้ง / เขตพื้นที่</label>
+          <input id="reporter" placeholder="ระบุชื่อผู้แจ้ง" required>
         </div>
-
         <div class="form-group">
           <label>ทะเบียนรถ</label>
-          <input id="vehicle" placeholder="เช่น 65-7233, 67-8306" required>
+          <input id="vehicle" placeholder="เช่น 65-7233" required>
         </div>
-
         <div class="form-group">
-          <label>หมวดหมู่ปัญหา</label>
+          <label>ประเภทปัญหา</label>
           <select id="category" required>
-            <option value="" disabled selected>-- กรุณาเลือกปัญหาที่พบ --</option>
-            <option value="gps_missing">📡 ข้อมูล GPS ไม่ขึ้น / สัญญาณหาย</option>
-            <option value="missing_info">👤 ไม่มีข้อมูลทะเบียนรถ / พนักงานขับรถ</option>
-            <option value="system_error">💻 เข้าหมายเหตุไม่ได้ / ระบบ Error</option>
-            <option value="other">❓ อื่นๆ (โปรดระบุในรายละเอียด)</option>
+            <option value="" disabled selected>-- เลือกประเภท --</option>
+            <option value="gps">สัญญาณ GPS หาย / ไม่ขยับ</option>
+            <option value="data">ข้อมูลรถ / พขร. ไม่ถูกต้อง</option>
+            <option value="system">ระบบค้าง / เข้าใช้งานไม่ได้</option>
+            <option value="other">ปัญหาอื่นๆ</option>
           </select>
         </div>
-
         <div class="form-group">
-          <label>รายละเอียดเพิ่มเติม</label>
-          <textarea id="problem" rows="4" placeholder="ระบุอาการที่พบ เช่น ข้อมูลไม่ขึ้นตั้งแต่ 15/01/69" required></textarea>
+          <label>รายละเอียด</label>
+          <textarea id="problem" rows="3" placeholder="ระบุอาการเพิ่มเติม..." required></textarea>
         </div>
-
-        <button type="submit" id="submitBtn">
-          <i class="material-icons-round">send</i> บันทึกข้อมูล
-        </button>
+        <button type="submit" id="submitBtn">บันทึกข้อมูล</button>
       </form>
     </div>
 
-    <div class="card">
-      <h2><i class="material-icons-round">history</i> ประวัติการแจ้งปัญหาล่าสุด</h2>
-      <div id="ticketList" class="tickets-container"></div>
-      
-      <div id="loadMoreContainer" class="load-more-container" style="display: none;">
-        <button id="loadMoreBtn" class="load-more-btn">
-          แสดงเพิ่มเติม <i class="material-icons-round">expand_more</i>
-        </button>
+    <div class="list-section">
+      <div class="list-header">
+        <h2>รายการล่าสุด</h2>
       </div>
+      <div id="ticketList"></div>
     </div>
+
   </div>
 </div>
 
-<div id="toast"><i class="material-icons-round">check_circle</i> <span>บันทึกข้อมูลสำเร็จ!</span></div>
+<div id="toast"><i class="material-icons-round" style="color:#4ade80;">check_circle</i> <span>สำเร็จ!</span></div>
 
 <script>
-// ตัวแปร UI
+// --- ส่วน Logic (เหมือนเดิม แต่ปรับ Class ให้ตรงกับ CSS ใหม่) ---
 const form = document.getElementById("ticketForm");
 const submitBtn = document.getElementById("submitBtn");
-const reporterInput = document.getElementById("reporter");
-const vehicleInput = document.getElementById("vehicle");
-const categorySelect = document.getElementById("category");
-const problemInput = document.getElementById("problem");
 const ticketList = document.getElementById("ticketList");
 const toast = document.getElementById("toast");
-const loadMoreBtn = document.getElementById("loadMoreBtn");
-const loadMoreContainer = document.getElementById("loadMoreContainer");
-const toggleStatsBtn = document.getElementById("toggleStatsBtn");
-const statsWrapper = document.getElementById("statsWrapper");
-const toggleText = document.getElementById("toggleText");
 
-// ตั้งค่าข้อมูลจำลอง
-let visibleCount = 5;
-const STORAGE_KEY = "routemap_tickets_test_mode"; // คีย์ LocalStorage สำหรับโหมดเทส
+const STORAGE_KEY = "routemap_modern_test";
 let tickets = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 let nextId = tickets.length > 0 ? Math.max(...tickets.map(t => t.id)) + 1 : 1;
 
-// จัดการการพับเปิด/ปิด สถิติ
-toggleStatsBtn.addEventListener("click", () => {
-  statsWrapper.classList.toggle("show");
-  toggleStatsBtn.classList.toggle("active");
-  toggleText.textContent = statsWrapper.classList.contains("show") ? "ซ่อนสถิติภาพรวม" : "แสดงสถิติภาพรวม";
-});
+const categoryMap = { gps: 'สัญญาณ GPS', data: 'ข้อมูลรถ/พขร.', system: 'ระบบมีปัญหา', other: 'อื่นๆ' };
 
-const categoryMap = {
-  gps_missing: 'ข้อมูล GPS ไม่ขึ้น',
-  missing_info: 'ไม่มีข้อมูล พขร.',
-  system_error: 'ระบบ Error / เข้าไม่ได้',
-  other: 'อื่นๆ'
-};
-
-const getStatusClass = (status) => {
-  if(status === 'open') return 'status-open-bg';
-  if(status === 'progress') return 'status-progress-bg';
-  return 'status-done-bg';
-};
-
-// อัปเดตตัวเลขสถิติบนหน้าเว็บ
-function updateStatsUI() {
-  const stats = {
-    total: tickets.length,
-    open: tickets.filter(t => t.status === 'open').length,
-    progress: tickets.filter(t => t.status === 'progress').length,
-    done: tickets.filter(t => t.status === 'done').length
-  };
-
-  document.getElementById("totalTickets").textContent = stats.total;
-  document.getElementById("openTickets").textContent = stats.open;
-  document.getElementById("progressTickets").textContent = stats.progress;
-  document.getElementById("doneTickets").textContent = stats.done;
+function getStatusStyle(status) {
+  if(status === 'open') return 'status-open-style';
+  if(status === 'progress') return 'status-progress-style';
+  return 'status-done-style';
 }
 
-// โชว์กล่องข้อความสำเร็จ
-function showToast(message) {
-  toast.querySelector('span').textContent = message;
+function updateStatsUI() {
+  document.getElementById("totalTickets").textContent = tickets.length;
+  document.getElementById("openTickets").textContent = tickets.filter(t => t.status === 'open').length;
+  document.getElementById("progressTickets").textContent = tickets.filter(t => t.status === 'progress').length;
+  document.getElementById("doneTickets").textContent = tickets.filter(t => t.status === 'done').length;
+}
+
+function showToast(msg) {
+  toast.querySelector('span').textContent = msg;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-// แสดงรายการแจ้งปัญหา
 function renderTickets() {
   if (tickets.length === 0) {
-    ticketList.innerHTML = `
-      <div class="empty-state">
-        <i class="material-icons-round">inbox</i>
-        <h3>ยังไม่มีรายการแจ้ง</h3>
-        <p>ทดลองสร้างรายการแรกของคุณได้เลย (ข้อมูลจะถูกเก็บไว้ในเบราว์เซอร์)</p>
-      </div>
-    `;
-    loadMoreContainer.style.display = "none";
+    ticketList.innerHTML = `<div class="empty-state"><i class="material-icons-round">inbox</i><p>ยังไม่มีรายการแจ้งปัญหา</p></div>`;
     return;
   }
 
-  const ticketsToShow = tickets.slice(0, visibleCount);
-
-  ticketList.innerHTML = ticketsToShow.map(ticket => {
-    const categoryName = categoryMap[ticket.category] || ticket.category;
-    const statusClass = getStatusClass(ticket.status);
-    
-    return `
-      <div class="ticket" data-status="${ticket.status}">
-        <div class="ticket-header">
-          <div class="ticket-title-wrapper">
-            <span class="ticket-category">${categoryName}</span>
-            <span class="ticket-id">#TKT-${String(ticket.id).padStart(4, '0')}</span>
-          </div>
+  ticketList.innerHTML = tickets.map(ticket => `
+    <div class="ticket" data-status="${ticket.status}">
+      <div class="ticket-top">
+        <div class="ticket-title">
+          ${categoryMap[ticket.category] || ticket.category}
         </div>
-        <div style="margin-bottom: 0.5rem;">
-            <span style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255, 205, 0, 0.2); color: var(--accent-yellow); padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">
-              <i class="material-icons-round" style="font-size: 1rem;">directions_car</i> ทะเบียน: ${ticket.vehicle}
-            </span>
-        </div>
-        <div class="ticket-desc">
-          ${ticket.problem}
-        </div>
-        <div class="ticket-footer">
-          <div class="ticket-meta">
-            <span><i class="material-icons-round">account_circle</i> ${ticket.reporter}</span>
-            <span><i class="material-icons-round">schedule</i> ${new Date(ticket.createdAt).toLocaleDateString('th-TH', { 
-              day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' 
-            })}</span>
-          </div>
-          <select class="status-select ${statusClass}" onchange="updateStatus(${ticket.id}, this.value, this)">
-            <option value="open" ${ticket.status === 'open' ? 'selected' : ''}>รอการแก้ไข</option>
-            <option value="progress" ${ticket.status === 'progress' ? 'selected' : ''}>กำลังดำเนินการ</option>
-            <option value="done" ${ticket.status === 'done' ? 'selected' : ''}>เสร็จสิ้น</option>
-          </select>
-        </div>
+        <div class="ticket-id">#TKT-${String(ticket.id).padStart(4, '0')}</div>
       </div>
-    `;
-  }).join('');
-
-  loadMoreContainer.style.display = tickets.length > visibleCount ? "block" : "none";
+      
+      <div class="vehicle-badge">
+        <i class="material-icons-round" style="font-size: 1rem;">directions_car</i> ${ticket.vehicle}
+      </div>
+      
+      <div class="ticket-desc">${ticket.problem}</div>
+      
+      <div class="ticket-bottom">
+        <div class="ticket-meta">
+          <span><i class="material-icons-round" style="font-size: 1rem;">person</i> ${ticket.reporter}</span>
+          <span><i class="material-icons-round" style="font-size: 1rem;">schedule</i> ${new Date(ticket.createdAt).toLocaleDateString('th-TH', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</span>
+        </div>
+        
+        <select class="status-select ${getStatusStyle(ticket.status)}" onchange="updateStatus(${ticket.id}, this.value, this)">
+          <option value="open" ${ticket.status === 'open' ? 'selected' : ''}>รอแก้ไข</option>
+          <option value="progress" ${ticket.status === 'progress' ? 'selected' : ''}>กำลังทำ</option>
+          <option value="done" ${ticket.status === 'done' ? 'selected' : ''}>เสร็จสิ้น</option>
+        </select>
+      </div>
+    </div>
+  `).join('');
 }
 
-// โหลดเพิ่มทีละ 5
-loadMoreBtn.addEventListener("click", () => {
-  visibleCount += 5;
-  renderTickets();
-});
-
-// เปลี่ยนสถานะ (ลอจิกเทส ไม่ต่อเน็ต)
-function updateStatus(id, status, selectElement) {
+function updateStatus(id, status, selectEl) {
   const ticket = tickets.find(t => t.id === id);
   if (ticket) {
     ticket.status = status;
-    ticket.updatedAt = Date.now();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets)); // เซฟลงเครื่อง
-    
-    selectElement.closest('.ticket').setAttribute('data-status', status);
-    selectElement.className = `status-select ${getStatusClass(status)}`;
-    
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
+    selectEl.closest('.ticket').setAttribute('data-status', status);
+    selectEl.className = `status-select ${getStatusStyle(status)}`;
     updateStatsUI();
   }
 }
 
-// กดปุ่มส่งข้อมูล (ลอจิกเทส ไม่ต่อเน็ต)
 form.onsubmit = (e) => {
   e.preventDefault();
-  
-  const originalBtnText = submitBtn.innerHTML;
-  submitBtn.innerHTML = `<i class="material-icons-round spin">sync</i> จำลองการส่งข้อมูล...`;
+  const originalText = submitBtn.innerHTML;
+  submitBtn.innerHTML = `<i class="material-icons-round spin">sync</i> กำลังบันทึก...`;
   submitBtn.disabled = true;
   
-  const ticket = {
-    id: nextId++,
-    reporter: reporterInput.value.trim(),
-    vehicle: vehicleInput.value.trim(),
-    category: categorySelect.value,
-    problem: problemInput.value.trim(),
-    status: 'open',
-    createdAt: Date.now(),
-    updatedAt: Date.now()
-  };
-
-  // แกล้งดีเลย์ 500ms ให้ดูเหมือนกำลังโหลดส่งข้อมูลจริงๆ
   setTimeout(() => {
-    tickets.unshift(ticket);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets)); // เซฟลงเครื่อง
+    tickets.unshift({
+      id: nextId++,
+      reporter: document.getElementById("reporter").value.trim(),
+      vehicle: document.getElementById("vehicle").value.trim(),
+      category: document.getElementById("category").value,
+      problem: document.getElementById("problem").value.trim(),
+      status: 'open',
+      createdAt: Date.now()
+    });
     
-    visibleCount = 5; 
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
     renderTickets();
     updateStatsUI();
+    showToast("บันทึกข้อมูลสำเร็จ");
     
-    showToast("บันทึกข้อมูลจำลองสำเร็จ!");
-    submitBtn.innerHTML = originalBtnText;
+    submitBtn.innerHTML = originalText;
     submitBtn.disabled = false;
     form.reset();
-    
-    if(window.innerWidth > 900) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }, 500);
+  }, 400);
 };
 
-// โหลดข้อมูลครั้งแรก
+// Initial load
 renderTickets();
 updateStatsUI();
-
 </script>
 
 </body>
