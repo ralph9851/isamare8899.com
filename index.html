@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>อต. 4HELP - ระบบแจ้งปัญหาเมือง</title>
+<title>อต. FIKA - ระบบแจ้งปัญหาเมือง</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
 <style>
 :root {
-    --bg-gradient: linear-gradient(135deg, #0f172a, #1e293b, #0f172a);
-    --card-bg: rgba(255, 255, 255, 0.03);
-    --card-border: rgba(255, 255, 255, 0.08);
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --primary: #3b82f6;
-    --primary-hover: #2563eb;
-    --accent: #10b981;
+    --bg-body: #f1f5f9; /* สีพื้นหลังเว็บ */
+    --bg-card: #ffffff; /* สีพื้นหลังการ์ด */
+    --border-color: #e2e8f0;
+    --text-main: #0f172a; /* สีข้อความหลัก (เข้ม) */
+    --text-muted: #64748b; /* สีข้อความรอง (เทา) */
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --input-bg: #f8fafc;
 }
 
 * {
@@ -28,30 +28,35 @@
 }
 
 body {
-    background: var(--bg-gradient);
+    background: var(--bg-body);
     color: var(--text-main);
     min-height: 100vh;
-    padding-bottom: 40px;
+    padding-bottom: 50px;
+    font-size: 16px; /* ขยายฟอนต์ฐานให้ใหญ่ขึ้น */
 }
 
 /* --- Header --- */
 header {
+    background: var(--bg-card);
     text-align: center;
-    padding: 50px 20px 40px;
+    padding: 40px 20px;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
 }
 header h1 {
-    font-size: 42px;
+    font-size: 36px;
     font-weight: 700;
-    background: linear-gradient(90deg, #60a5fa, #34d399);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--primary);
     margin-bottom: 8px;
-    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 header p {
     color: var(--text-muted);
     font-size: 16px;
-    font-weight: 300;
 }
 
 .container {
@@ -65,67 +70,51 @@ header p {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 .stat {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--card-border);
-    border-radius: 20px;
-    padding: 24px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
     text-align: center;
-    transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.stat:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.06);
-}
-.stat i {
-    font-size: 28px;
-    margin-bottom: 10px;
-    opacity: 0.8;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 .stat h2 {
-    font-size: 36px;
+    font-size: 40px;
     font-weight: 700;
-    margin-bottom: 4px;
-    color: #fff;
+    color: var(--text-main);
+    margin-bottom: 5px;
 }
 .stat p {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text-muted);
-    font-weight: 400;
+    font-weight: 500;
 }
 
 /* --- Main Layout --- */
 .grid {
     display: grid;
-    grid-template-columns: 380px 1fr;
+    grid-template-columns: 400px 1fr; /* ขยายฝั่งซ้ายให้กว้างขึ้นนิดหน่อย */
     gap: 30px;
     align-items: start;
 }
 
 .card {
-    background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--card-border);
-    border-radius: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
     padding: 30px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
 }
 .card h2 {
     margin-bottom: 24px;
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 20px;
-    border-bottom: 1px solid var(--card-border);
+    font-size: 22px; /* ขยายหัวข้อ */
+    color: var(--text-main);
+    border-bottom: 2px solid var(--bg-body);
     padding-bottom: 15px;
 }
 .card h2 i {
@@ -134,82 +123,71 @@ header p {
 
 /* --- Form Elements --- */
 .form-group {
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
 label {
     display: block;
     margin-bottom: 8px;
-    font-size: 14px;
-    color: #cbd5e1;
-    font-weight: 500;
+    font-size: 16px;
+    color: var(--text-main);
+    font-weight: 600;
 }
 input, select, textarea {
     width: 100%;
     padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(0,0,0,0.25);
-    color: white;
-    font-size: 15px;
-    transition: all 0.3s ease;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    background: var(--input-bg);
+    color: var(--text-main);
+    font-size: 16px; /* ขยายขนาดตัวหนังสือในฟอร์ม */
+    transition: all 0.2s ease;
 }
 input::placeholder, textarea::placeholder {
-    color: #64748b;
+    color: #94a3b8;
 }
 input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: var(--primary);
-    background: rgba(0,0,0,0.4);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 select {
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1em;
+    cursor: pointer;
 }
-select option { background: #1e293b; color: white; }
 
 button.btn-submit {
     width: 100%;
     padding: 16px;
     margin-top: 10px;
     border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+    border-radius: 8px;
+    background: var(--primary);
     color: white;
-    font-size: 16px;
+    font-size: 18px; /* ขยายฟอนต์ปุ่ม */
     font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    transition: background 0.2s ease;
 }
 button.btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    background: var(--primary-hover);
 }
 
 /* --- Tickets List --- */
 .ticket-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px; /* เพิ่มระยะห่างระหว่างการ์ด */
 }
 .ticket {
-    background: rgba(255, 255, 255, 0.02);
-    border-radius: 16px;
-    padding: 20px;
-    border: 1px solid var(--card-border);
-    transition: 0.2s ease;
-}
-.ticket:hover {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .ticket-top {
@@ -219,46 +197,43 @@ button.btn-submit:hover {
     margin-bottom: 12px;
 }
 .ticket-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #e2e8f0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-size: 20px; /* ขยายหัวข้อปัญหา */
+    font-weight: 700;
+    color: var(--text-main);
 }
 .ticket-id {
-    font-size: 12px;
-    color: var(--primary);
+    font-size: 14px;
+    color: var(--text-muted);
     font-family: monospace;
-    font-weight: 700;
-    background: rgba(59, 130, 246, 0.1);
-    padding: 4px 8px;
+    background: var(--bg-body);
+    padding: 6px 10px;
     border-radius: 6px;
+    border: 1px solid var(--border-color);
 }
 
 .ticket-desc {
-    font-size: 15px;
-    color: #cbd5e1;
-    margin-bottom: 16px;
-    line-height: 1.5;
+    font-size: 16px; /* ขยายเนื้อหาปัญหา */
+    color: #334155;
+    margin-bottom: 20px;
+    line-height: 1.6;
 }
 
 .ticket-meta {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-size: 13px;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 15px;
     color: var(--text-muted);
-    margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px dashed var(--card-border);
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed #cbd5e1;
 }
 .ticket-meta div {
     display: flex;
     align-items: center;
     gap: 6px;
 }
-.ticket-meta i { font-size: 16px; color: #64748b; }
+.ticket-meta i { font-size: 18px; color: var(--primary); }
 
 /* Status Badges & Controls */
 .ticket-footer {
@@ -267,35 +242,37 @@ button.btn-submit:hover {
     align-items: center;
 }
 .badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 14px;
     font-weight: 600;
     display: inline-block;
 }
-.badge.open { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
-.badge.progress { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
-.badge.done { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+.badge.open { background: #fee2e2; color: #b91c1c; }
+.badge.progress { background: #fef3c7; color: #b45309; }
+.badge.done { background: #d1fae5; color: #047857; }
 
 .statusSelect {
-    padding: 6px 30px 6px 12px;
-    font-size: 13px;
+    padding: 8px 12px;
+    font-size: 14px;
     width: auto;
-    background-color: rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.1);
+    font-weight: 600;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    margin: 0;
+    color: var(--text-main);
 }
 
 .empty-state {
     text-align: center;
-    padding: 40px 20px;
+    padding: 60px 20px;
     color: var(--text-muted);
+    font-size: 18px;
 }
 .empty-state i {
-    font-size: 48px;
-    opacity: 0.3;
-    margin-bottom: 10px;
+    font-size: 60px;
+    color: #cbd5e1;
+    margin-bottom: 15px;
 }
 
 @media(max-width: 900px) {
@@ -308,29 +285,25 @@ button.btn-submit:hover {
 <body>
 
 <header>
-    <h1>อต. FIKA</h1>
+    <h1><i class="material-icons-round">volunteer_activism</i> อต. FIKA</h1>
     <p>ระบบแจ้งปัญหาเมืองอัจฉริยะ (Smart City Complaint System)</p>
 </header>
 
 <div class="container">
     <div class="stats">
         <div class="stat">
-            <i class="material-icons-round" style="color: #60a5fa;">receipt_long</i>
             <h2 id="total">0</h2>
             <p>เรื่องทั้งหมด</p>
         </div>
         <div class="stat">
-            <i class="material-icons-round" style="color: #f87171;">report_problem</i>
             <h2 id="open">0</h2>
             <p>รับเรื่องแล้ว</p>
         </div>
         <div class="stat">
-            <i class="material-icons-round" style="color: #fbbf24;">engineering</i>
             <h2 id="progress">0</h2>
             <p>กำลังดำเนินการ</p>
         </div>
         <div class="stat">
-            <i class="material-icons-round" style="color: #34d399;">task_alt</i>
             <h2 id="done">0</h2>
             <p>เสร็จสิ้น</p>
         </div>
@@ -338,7 +311,7 @@ button.btn-submit:hover {
 
     <div class="grid">
         <div class="card">
-            <h2><i class="material-icons-round">campaign</i> แจ้งปัญหา</h2>
+            <h2><i class="material-icons-round">edit_document</i> ฟอร์มแจ้งปัญหา</h2>
             <form id="form">
                 <div class="form-group">
                     <label>ชื่อผู้แจ้ง</label>
@@ -346,13 +319,13 @@ button.btn-submit:hover {
                 </div>
                 <div class="form-group">
                     <label>สถานที่เกิดเหตุ</label>
-                    <input id="loc" placeholder="เช่น ถนนตลาดเหนือ, ซอย 5" required>
+                    <input id="loc" placeholder="ระบุ ถนน, ซอย, จุดสังเกต..." required>
                 </div>
                 <div class="form-group">
                     <label>ประเภทปัญหา</label>
                     <select id="category">
                         <option value="ถนนชำรุด">ถนนชำรุด / หลุมบ่อ</option>
-                        <option value="ไฟถนนดับ">ไฟถนนดับ</option>
+                        <option value="ไฟถนนดับ">ไฟส่องสว่างดับ</option>
                         <option value="ขยะ">ปัญหาขยะตกค้าง</option>
                         <option value="ท่อระบายน้ำ">ท่อระบายน้ำ / น้ำท่วมขัง</option>
                         <option value="น้ำประปา">น้ำประปา / ท่อแตก</option>
@@ -363,7 +336,7 @@ button.btn-submit:hover {
                 </div>
                 <div class="form-group">
                     <label>รายละเอียดปัญหา</label>
-                    <textarea id="problem" rows="4" placeholder="อธิบายปัญหาที่พบเห็น..." required></textarea>
+                    <textarea id="problem" rows="4" placeholder="อธิบายรายละเอียดปัญหาที่พบเห็น..." required></textarea>
                 </div>
                 <button type="submit" class="btn-submit">
                     <i class="material-icons-round">send</i> ส่งเรื่องร้องเรียน
@@ -372,14 +345,14 @@ button.btn-submit:hover {
         </div>
 
         <div class="card">
-            <h2><i class="material-icons-round">history</i> รายการแจ้งปัญหา</h2>
+            <h2><i class="material-icons-round">format_list_bulleted</i> รายการแจ้งปัญหา</h2>
             <div id="list" class="ticket-list"></div>
         </div>
     </div>
 </div>
 
 <script>
-let tickets = JSON.parse(localStorage.getItem("cityTickets")) || [];
+let tickets = JSON.parse(localStorage.getItem("cityTickets_v4")) || [];
 let nextId = tickets.length ? Math.max(...tickets.map(t => t.id)) + 1 : 1;
 const list = document.getElementById("list");
 
@@ -411,7 +384,6 @@ function render() {
     }
 
     tickets.forEach(t => {
-        // จัดรูปแบบวันที่ (ถ้ามี) หรือแสดงค่าว่างถ้าเป็นข้อมูลเก่าที่ไม่มี Date
         let dateStr = "ไม่ระบุเวลา";
         if (t.date) {
             let d = new Date(t.date);
@@ -429,7 +401,8 @@ function render() {
                 </div>
                 <div class="ticket-meta">
                     <div><i class="material-icons-round">place</i> ${t.location}</div>
-                    <div><i class="material-icons-round">person</i> ${t.reporter} &nbsp;|&nbsp; <i class="material-icons-round">schedule</i> ${dateStr}</div>
+                    <div><i class="material-icons-round">person</i> ${t.reporter}</div>
+                    <div><i class="material-icons-round">schedule</i> ${dateStr}</div>
                 </div>
                 
                 <div class="ticket-footer">
@@ -452,7 +425,7 @@ function updateStatus(id, status) {
     let t = tickets.find(x => x.id === id);
     if(t) {
         t.status = status;
-        localStorage.setItem("cityTickets", JSON.stringify(tickets));
+        localStorage.setItem("cityTickets_v4", JSON.stringify(tickets));
         render();
     }
 }
@@ -470,14 +443,13 @@ document.getElementById("form").onsubmit = e => {
         date: Date.now()
     };
 
-    tickets.unshift(ticket); // เอาเรื่องใหม่ไว้บนสุด
-    localStorage.setItem("cityTickets", JSON.stringify(tickets));
+    tickets.unshift(ticket);
+    localStorage.setItem("cityTickets_v4", JSON.stringify(tickets));
     
     render();
-    e.target.reset(); // ล้างฟอร์ม
+    e.target.reset();
 };
 
-// รันครั้งแรกเมื่อโหลดหน้า
 render();
 </script>
 
