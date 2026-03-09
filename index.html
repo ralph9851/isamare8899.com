@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>อต. FIKA - IT Helpdesk System</title>
+<title>อต. FIKA - ระบบแจ้งปัญหาเมือง</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -11,9 +11,9 @@
 <style>
 :root {
     /* โทนสีแบบ A.R.E.E Tech (Navy Blue & Orange) */
-    --primary: #0a2540;      /* น้ำเงินเข้มองค์กร */
+    --primary: #0a2540;      
     --primary-light: #184273;
-    --accent: #f26522;       /* ส้มบริษัทไอที */
+    --accent: #f26522;       
     --accent-hover: #d95517;
     
     --bg-body: #f4f7f8;
@@ -40,7 +40,7 @@ body {
     min-height: 100vh;
     padding-bottom: 50px;
     background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-    background-size: 30px 30px; /* พื้นหลังลายจุดบางๆ ให้ดูเป็นระบบ Tech */
+    background-size: 30px 30px; 
 }
 
 /* --- Corporate Header --- */
@@ -50,7 +50,7 @@ header {
     padding: 60px 20px 80px;
     text-align: center;
     position: relative;
-    clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%); /* ตัดขอบเฉียงล้ำๆ */
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%); 
     margin-bottom: -40px;
 }
 header h1 {
@@ -174,7 +174,6 @@ button.btn-submit:hover {
 /* --- Tickets List & Animations --- */
 .ticket-list { display: flex; flex-direction: column; gap: 15px; }
 
-/* Animation สำหรับการ์ดโผล่ทีละใบ */
 @keyframes slideUpFade {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -184,7 +183,7 @@ button.btn-submit:hover {
     background: #ffffff; border-radius: 12px; padding: 20px; border: 1px solid var(--border-color);
     box-shadow: 0 2px 8px rgba(0,0,0,0.02); transition: all 0.3s ease;
     animation: slideUpFade 0.4s ease forwards;
-    opacity: 0; /* ซ่อนไว้ก่อนให้ Animation ทำงาน */
+    opacity: 0; 
 }
 .ticket:hover {
     box-shadow: 0 8px 25px rgba(0,0,0,0.08); border-color: #cbd5e1; transform: translateY(-3px);
@@ -214,7 +213,7 @@ button.btn-submit:hover {
 .badge.progress { background: #fef3c7; color: #b45309; }
 .badge.done { background: #d1fae5; color: #047857; }
 
-/* Pulsing Dot สำหรับสถานะ "รอรับเรื่อง" */
+/* Pulsing Dot */
 .pulse-dot {
     width: 8px; height: 8px; border-radius: 50%; background-color: currentColor;
 }
@@ -236,7 +235,7 @@ button.btn-submit:hover {
 .empty-state { text-align: center; padding: 50px 20px; color: var(--text-muted); }
 .empty-state i { font-size: 60px; color: #cbd5e1; margin-bottom: 10px; }
 
-/* โชว์กล่องแจ้งเตือน (Toast) */
+/* Toast Notification */
 #toast {
     position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white;
     padding: 12px 24px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -255,8 +254,8 @@ button.btn-submit:hover {
 <body>
 
 <header>
-    <h1><i class="material-icons-round">support_agent</i> อต. FIKA Service Desk</h1>
-    <p>ระบบแจ้งปัญหาเมือง และสนับสนุนการให้บริการประชาชน (Smart IT Helpdesk)</p>
+    <h1><i class="material-icons-round">location_city</i> อต. FIKA</h1>
+    <p>ระบบแจ้งปัญหาเมืองอัจฉริยะ (Smart City Complaint System)</p>
 </header>
 
 <div class="container">
@@ -282,40 +281,43 @@ button.btn-submit:hover {
     <div class="grid">
         <div class="card" style="position: sticky; top: 20px;">
             <div class="card-header">
-                <h2><i class="material-icons-round">add_circle</i> แจ้งปัญหาใหม่</h2>
+                <h2><i class="material-icons-round">campaign</i> แจ้งปัญหาใหม่</h2>
             </div>
             <form id="form">
                 <div class="form-group">
-                    <label>ชื่อผู้แจ้ง / รหัสพนักงาน</label>
-                    <input id="reporter" placeholder="ระบุตัวตนผู้แจ้ง" required>
+                    <label>ชื่อผู้แจ้ง</label>
+                    <input id="reporter" placeholder="ชื่อ หรือ นามแฝง" required>
                 </div>
                 <div class="form-group">
-                    <label>สถานที่ / แผนก</label>
-                    <input id="loc" placeholder="ระบุจุดเกิดเหตุ..." required>
+                    <label>สถานที่เกิดเหตุ</label>
+                    <input id="loc" placeholder="เช่น ถนนตลาดเหนือ, ซอย 5" required>
                 </div>
                 <div class="form-group">
                     <label>ประเภทของปัญหา</label>
                     <select id="category">
-                        <option value="ฮาร์ดแวร์ / อุปกรณ์">💻 ฮาร์ดแวร์ / อุปกรณ์ไอที</option>
-                        <option value="ระบบเน็ตเวิร์ค">📡 ระบบเครือข่าย / อินเทอร์เน็ต</option>
-                        <option value="ซอฟต์แวร์">⚙️ ซอฟต์แวร์ / การใช้งานโปรแกรม</option>
-                        <option value="ถนน / โครงสร้าง">🛣️ โครงสร้างอาคาร / ถนน</option>
+                        <option value="ถนนชำรุด">🛣️ ถนนชำรุด / หลุมบ่อ</option>
+                        <option value="ไฟถนนดับ">💡 ไฟถนนดับ</option>
+                        <option value="ขยะ">🗑️ ปัญหาขยะตกค้าง</option>
+                        <option value="ท่อระบายน้ำ">🌊 ท่อระบายน้ำ / น้ำท่วมขัง</option>
+                        <option value="น้ำประปา">🚰 น้ำประปา / ท่อแตก</option>
+                        <option value="ต้นไม้กีดขวาง">🌳 ต้นไม้กีดขวาง</option>
+                        <option value="สัตว์จรจัด">🐕 สัตว์จรจัด</option>
                         <option value="อื่นๆ">❓ อื่นๆ</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>รายละเอียดปัญหา (Log)</label>
-                    <textarea id="problem" rows="4" placeholder="ระบุอาการหรือข้อขัดข้องที่พบ..." required></textarea>
+                    <label>รายละเอียดปัญหา</label>
+                    <textarea id="problem" rows="4" placeholder="อธิบายรายละเอียดปัญหาที่พบเห็น..." required></textarea>
                 </div>
                 <button type="submit" class="btn-submit" id="submitBtn">
-                    <i class="material-icons-round">send</i> ส่งคำร้องขอรับบริการ
+                    <i class="material-icons-round">send</i> ส่งแจ้งปัญหา
                 </button>
             </form>
         </div>
 
         <div class="card">
             <div class="card-header">
-                <h2><i class="material-icons-round">list_alt</i> รายการ Ticket (รอการแก้ไข)</h2>
+                <h2><i class="material-icons-round">format_list_bulleted</i> รายการแจ้งปัญหา</h2>
             </div>
             <div id="list" class="ticket-list"></div>
         </div>
@@ -325,7 +327,8 @@ button.btn-submit:hover {
 <div id="toast"><i class="material-icons-round">check_circle</i> <span>บันทึกข้อมูลสำเร็จ!</span></div>
 
 <script>
-let tickets = JSON.parse(localStorage.getItem("helpdesk_tickets_v1")) || [];
+// เปลี่ยนชื่อ Key ใน LocalStorage เพื่อไม่ให้ไปทับกับข้อมูลระบบ IT
+let tickets = JSON.parse(localStorage.getItem("fika_city_tickets")) || [];
 let nextId = tickets.length ? Math.max(...tickets.map(t => t.id)) + 1 : 1;
 const list = document.getElementById("list");
 const toast = document.getElementById("toast");
@@ -333,7 +336,7 @@ const toast = document.getElementById("toast");
 const statusLabels = {
     open: "รอรับเรื่อง",
     progress: "กำลังดำเนินการ",
-    done: "แก้ไขเสร็จสิ้น"
+    done: "เสร็จสิ้น"
 };
 
 function showToast(message) {
@@ -356,7 +359,7 @@ function render() {
         list.innerHTML = `
             <div class="empty-state">
                 <i class="material-icons-round">inbox</i>
-                <p>ไม่มี Ticket ค้างในระบบ</p>
+                <p>ยังไม่มีรายการแจ้งปัญหาในขณะนี้</p>
             </div>
         `;
         updateStats();
@@ -370,14 +373,13 @@ function render() {
             dateStr = d.toLocaleDateString('th-TH', { month: 'short', day: 'numeric'}) + ' ' + d.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'});
         }
 
-        // ใส่ delay ให้ animation โผล่มาทีละใบ
         let delay = index * 0.1;
 
         list.innerHTML += `
             <div class="ticket" style="animation-delay: ${delay}s;">
                 <div class="ticket-top">
                     <div>
-                        <div class="ticket-id">Ticket #TKT-${String(t.id).padStart(5, '0')}</div>
+                        <div class="ticket-id">#FIKA-${String(t.id).padStart(4, '0')}</div>
                         <div class="ticket-title">${t.category}</div>
                     </div>
                     <span class="badge ${t.status}">
@@ -395,11 +397,11 @@ function render() {
                 </div>
                 
                 <div class="ticket-footer">
-                    <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">อัปเดตสถานะงาน:</span>
+                    <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">อัปเดตสถานะ:</span>
                     <select class="statusSelect" onchange="updateStatus(${t.id}, this.value)">
                         <option value="open" ${t.status === "open" ? "selected" : ""}>รอรับเรื่อง</option>
                         <option value="progress" ${t.status === "progress" ? "selected" : ""}>กำลังดำเนินการ</option>
-                        <option value="done" ${t.status === "done" ? "selected" : ""}>แก้ไขเสร็จสิ้น</option>
+                        <option value="done" ${t.status === "done" ? "selected" : ""}>เสร็จสิ้น</option>
                     </select>
                 </div>
             </div>
@@ -413,9 +415,9 @@ function updateStatus(id, status) {
     let t = tickets.find(x => x.id === id);
     if(t) {
         t.status = status;
-        localStorage.setItem("helpdesk_tickets_v1", JSON.stringify(tickets));
+        localStorage.setItem("fika_city_tickets", JSON.stringify(tickets));
         render();
-        showToast("อัปเดตสถานะงานเรียบร้อยแล้ว");
+        showToast("อัปเดตสถานะเรียบร้อยแล้ว");
     }
 }
 
@@ -439,15 +441,15 @@ document.getElementById("form").onsubmit = e => {
         };
 
         tickets.unshift(ticket);
-        localStorage.setItem("helpdesk_tickets_v1", JSON.stringify(tickets));
+        localStorage.setItem("fika_city_tickets", JSON.stringify(tickets));
         
         render();
         e.target.reset();
-        showToast("ส่งคำร้องขอรับบริการเรียบร้อยแล้ว");
+        showToast("ส่งเรื่องแจ้งปัญหาเรียบร้อยแล้ว");
         
         btn.innerHTML = originalHtml;
         btn.disabled = false;
-    }, 400); // จำลองจังหวะโหลดให้ดูเนียนตา
+    }, 400); 
 };
 
 render();
