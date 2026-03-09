@@ -1,131 +1,260 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
+
 <meta charset="UTF-8">
-<title>อต. FIKA - ระบบแจ้งปัญหาเมือง</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>อต. FIKA - ระบบแจ้งปัญหาเมือง</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
 <style>
 
-body{
-font-family:Prompt;
-background:#0f172a;
-color:white;
+*{
+box-sizing:border-box;
 margin:0;
+padding:0;
+font-family:"Prompt",sans-serif;
+}
+
+body{
+
+background:linear-gradient(135deg,#0f172a,#1e293b,#334155);
+
+color:#f1f5f9;
+
+min-height:100vh;
+
 }
 
 header{
+
 text-align:center;
 padding:40px;
+
 }
 
 header h1{
+
 font-size:34px;
+font-weight:700;
+
+background:linear-gradient(90deg,#60a5fa,#22c55e);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+}
+
+header p{
+
+color:#cbd5f5;
+margin-top:5px;
+
 }
 
 .container{
-max-width:1100px;
+
+max-width:1200px;
 margin:auto;
 padding:20px;
-}
 
-.grid{
-display:grid;
-grid-template-columns:320px 1fr;
-gap:25px;
-}
-
-.card{
-background:#1e293b;
-border-radius:14px;
-padding:20px;
-}
-
-.card h2{
-margin-top:0;
-}
-
-input,select,textarea{
-width:100%;
-padding:10px;
-border-radius:8px;
-border:none;
-margin-bottom:12px;
-background:#334155;
-color:white;
-}
-
-button{
-width:100%;
-padding:12px;
-background:#2563eb;
-border:none;
-border-radius:10px;
-color:white;
-font-weight:600;
-cursor:pointer;
-}
-
-button:hover{
-background:#1d4ed8;
-}
-
-.ticket{
-background:#1e293b;
-border-radius:10px;
-padding:15px;
-margin-bottom:15px;
-}
-
-.ticket small{
-color:#94a3b8;
-}
-
-.status{
-padding:5px 10px;
-border-radius:20px;
-font-size:12px;
-}
-
-.open{background:#ef4444;}
-.progress{background:#f59e0b;}
-.done{background:#10b981;}
-
-select.statusSelect{
-width:auto;
 }
 
 .stats{
+
 display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;
-margin-bottom:20px;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:15px;
+margin-bottom:25px;
+
 }
 
 .stat{
-background:#1e293b;
-padding:15px;
-border-radius:10px;
+
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(10px);
+border-radius:16px;
+padding:20px;
 text-align:center;
+
+}
+
+.stat h2{
+
+font-size:28px;
+margin-bottom:5px;
+
+}
+
+.grid{
+
+display:grid;
+grid-template-columns:360px 1fr;
+gap:25px;
+
+}
+
+.card{
+
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
+backdrop-filter:blur(12px);
+border-radius:20px;
+padding:20px;
+
+}
+
+.card h2{
+
+margin-bottom:15px;
+
+display:flex;
+align-items:center;
+gap:8px;
+
+}
+
+input,select,textarea{
+
+width:100%;
+padding:10px;
+border-radius:10px;
+border:1px solid rgba(255,255,255,0.1);
+background:rgba(0,0,0,0.2);
+color:white;
+margin-bottom:12px;
+
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+outline:none;
+border-color:#3b82f6;
+
+}
+
+button{
+
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+
+background:linear-gradient(135deg,#3b82f6,#2563eb);
+
+color:white;
+font-weight:600;
+cursor:pointer;
+
+transition:.2s;
+
+}
+
+button:hover{
+
+transform:translateY(-2px);
+
+}
+
+.ticket{
+
+background:rgba(255,255,255,0.05);
+border-radius:16px;
+padding:15px;
+margin-bottom:15px;
+border:1px solid rgba(255,255,255,0.08);
+
+}
+
+.ticket-top{
+
+display:flex;
+justify-content:space-between;
+margin-bottom:6px;
+
+}
+
+.ticket-id{
+
+font-size:12px;
+color:#94a3b8;
+
+}
+
+.ticket-desc{
+
+margin:10px 0;
+color:#e2e8f0;
+
+}
+
+.ticket-meta{
+
+font-size:13px;
+color:#94a3b8;
+
+}
+
+.status{
+
+padding:5px 12px;
+border-radius:20px;
+font-size:12px;
+
+}
+
+.open{
+
+background:#ef4444;
+
+}
+
+.progress{
+
+background:#f59e0b;
+
+}
+
+.done{
+
+background:#22c55e;
+
+}
+
+.statusSelect{
+
+margin-top:10px;
+width:auto;
+
 }
 
 @media(max-width:900px){
+
 .grid{
+
 grid-template-columns:1fr;
+
 }
+
 }
 
 </style>
+
 </head>
 
 <body>
 
 <header>
-<h1><span class="material-icons-round">location_city</span> อต. FIKA</h1>
-<p>ระบบแจ้งปัญหาเมืองอัจฉริยะ (Smart City Service)</p>
+
+<h1>อต. FIKA</h1>
+
+<p>ระบบแจ้งปัญหาเมืองอัจฉริยะ (Smart City Complaint System)</p>
+
 </header>
 
 <div class="container">
@@ -133,23 +262,23 @@ grid-template-columns:1fr;
 <div class="stats">
 
 <div class="stat">
-<h3 id="total">0</h3>
-<small>เรื่องทั้งหมด</small>
+<h2 id="total">0</h2>
+<p>เรื่องทั้งหมด</p>
 </div>
 
 <div class="stat">
-<h3 id="open">0</h3>
-<small>รับเรื่องแล้ว</small>
+<h2 id="open">0</h2>
+<p>รับเรื่องแล้ว</p>
 </div>
 
 <div class="stat">
-<h3 id="progress">0</h3>
-<small>กำลังดำเนินการ</small>
+<h2 id="progress">0</h2>
+<p>กำลังดำเนินการ</p>
 </div>
 
 <div class="stat">
-<h3 id="done">0</h3>
-<small>เสร็จสิ้น</small>
+<h2 id="done">0</h2>
+<p>เสร็จสิ้น</p>
 </div>
 
 </div>
@@ -158,35 +287,51 @@ grid-template-columns:1fr;
 
 <div class="card">
 
-<h2>แจ้งปัญหา</h2>
+<h2><span class="material-icons-round">campaign</span> แจ้งปัญหา</h2>
 
 <form id="form">
 
 <label>ชื่อผู้แจ้ง</label>
+
 <input id="reporter" required>
 
 <label>สถานที่เกิดเหตุ</label>
+
 <input id="location" placeholder="เช่น ถนนตลาดเหนือ">
 
 <label>ประเภทปัญหา</label>
 
 <select id="category">
 
-<option value="road">ถนนชำรุด</option>
-<option value="light">ไฟถนนดับ</option>
-<option value="garbage">ขยะ</option>
-<option value="drain">ท่อระบายน้ำ</option>
-<option value="water">น้ำประปา</option>
-<option value="tree">ต้นไม้กีดขวาง</option>
-<option value="animal">สัตว์จรจัด</option>
-<option value="other">อื่นๆ</option>
+<option value="ถนนชำรุด">ถนนชำรุด</option>
+
+<option value="ไฟถนนดับ">ไฟถนนดับ</option>
+
+<option value="ขยะ">ขยะ</option>
+
+<option value="ท่อระบายน้ำ">ท่อระบายน้ำ</option>
+
+<option value="น้ำประปา">น้ำประปา</option>
+
+<option value="ต้นไม้กีดขวาง">ต้นไม้กีดขวาง</option>
+
+<option value="สัตว์จรจัด">สัตว์จรจัด</option>
+
+<option value="อื่นๆ">อื่นๆ</option>
 
 </select>
 
-<label>รายละเอียด</label>
+<label>รายละเอียดปัญหา</label>
+
 <textarea id="problem" rows="4"></textarea>
 
-<button type="submit">ส่งแจ้งปัญหา</button>
+<button type="submit">
+
+<span class="material-icons-round">send</span>
+
+ส่งแจ้งปัญหา
+
+</button>
 
 </form>
 
@@ -194,7 +339,7 @@ grid-template-columns:1fr;
 
 <div class="card">
 
-<h2>รายการแจ้งปัญหา</h2>
+<h2><span class="material-icons-round">history</span> รายการแจ้งปัญหา</h2>
 
 <div id="list"></div>
 
@@ -206,11 +351,11 @@ grid-template-columns:1fr;
 
 <script>
 
-let tickets = JSON.parse(localStorage.getItem("city_tickets")) || [];
+let tickets=JSON.parse(localStorage.getItem("cityTickets"))||[];
 
-let nextId = tickets.length ? Math.max(...tickets.map(t=>t.id))+1 : 1;
+let nextId=tickets.length?Math.max(...tickets.map(t=>t.id))+1:1;
 
-const list = document.getElementById("list");
+const list=document.getElementById("list");
 
 function updateStats(){
 
@@ -237,21 +382,42 @@ list.innerHTML+=`
 
 <div class="ticket">
 
+<div class="ticket-top">
+
 <strong>${t.category}</strong>
 
-<p>${t.problem}</p>
+<span class="ticket-id">#FIKA-${String(t.id).padStart(4,'0')}</span>
 
-<small>📍 ${t.location}</small><br>
-<small>👤 ${t.reporter}</small><br>
+</div>
+
+<div class="ticket-desc">
+
+${t.problem}
+
+</div>
+
+<div class="ticket-meta">
+
+📍 ${t.location}<br>
+
+👤 ${t.reporter}
+
+</div>
 
 <select class="statusSelect status ${t.status}"
 onchange="updateStatus(${t.id},this.value)">
 
-<option value="open" ${t.status=="open"?"selected":""}>รับเรื่องแล้ว</option>
+<option value="open" ${t.status=="open"?"selected":""}>
+รับเรื่องแล้ว
+</option>
 
-<option value="progress" ${t.status=="progress"?"selected":""}>กำลังดำเนินการ</option>
+<option value="progress" ${t.status=="progress"?"selected":""}>
+กำลังดำเนินการ
+</option>
 
-<option value="done" ${t.status=="done"?"selected":""}>เสร็จสิ้น</option>
+<option value="done" ${t.status=="done"?"selected":""}>
+เสร็จสิ้น
+</option>
 
 </select>
 
@@ -271,7 +437,7 @@ let t=tickets.find(x=>x.id==id);
 
 t.status=status;
 
-localStorage.setItem("city_tickets",JSON.stringify(tickets));
+localStorage.setItem("cityTickets",JSON.stringify(tickets));
 
 render();
 
@@ -285,13 +451,13 @@ let ticket={
 
 id:nextId++,
 
-reporter:document.getElementById("reporter").value,
+reporter:reporter.value,
 
-location:document.getElementById("location").value,
+location:location.value,
 
-category:document.getElementById("category").value,
+category:category.value,
 
-problem:document.getElementById("problem").value,
+problem:problem.value,
 
 status:"open",
 
@@ -301,7 +467,7 @@ date:Date.now()
 
 tickets.unshift(ticket);
 
-localStorage.setItem("city_tickets",JSON.stringify(tickets));
+localStorage.setItem("cityTickets",JSON.stringify(tickets));
 
 render();
 
