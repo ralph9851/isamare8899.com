@@ -10,7 +10,6 @@
 
 <style>
 :root {
-    /* Modern Material Design 3 inspired palette [web:4][web:9] */
     --primary: #0a2540;      
     --primary-container: #c5d5e8;
     --accent: #f26522;       
@@ -18,10 +17,9 @@
     --surface: #ffffff;
     --surface-variant: #e0e3e9;
     
-    /* Glassmorphism [web:3][web:5][web:11] */
     --glass-bg: rgba(255, 255, 255, 0.25);
     --glass-border: rgba(255, 255, 255, 0.18);
-    --blur: blur(16px);
+    --blur: blur(20px);
     
     --bg-body: linear-gradient(135deg, #f0f4ff 0%, #e0e8ff 50%, #f8fbff 100%);
     --text-main: #1e293b;
@@ -31,24 +29,52 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Prompt", sans-serif; }
-body { background: var(--bg-body); color: var(--text-main); min-height: 100vh; padding-bottom: 50px; overflow-x: hidden; }
+body { 
+    background: var(--bg-body); 
+    color: var(--text-main); 
+    min-height: 100vh; 
+    padding-bottom: 50px; 
+    overflow-x: hidden; 
+}
 
-/* Modern header with gradient and glass effect [web:12] */
 header {
     background: linear-gradient(135deg, var(--primary), #184273, #2e5a8a);
-    color: #ffffff; padding: 40px 20px 80px;
+    color: #ffffff; 
+    padding: 40px 20px 80px;
     position: relative; 
     clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); 
     margin-bottom: -40px;
     box-shadow: var(--shadow);
 }
-.header-top { display: flex; justify-content: space-between; align-items: flex-start; max-width: 1200px; margin: 0 auto 20px; }
+.header-top { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start; 
+    max-width: 1200px; 
+    margin: 0 auto 20px; 
+}
 .logo-area { text-align: left; }
-.logo-area h1 { font-size: 36px; font-weight: 700; display: flex; align-items: center; gap: 12px; margin-bottom: 5px; letter-spacing: -0.5px; }
-.logo-area h1 i { color: var(--accent); font-size: 42px; filter: drop-shadow(0 2px 4px rgba(242,101,34,0.4)); }
-.logo-area p { font-size: 16px; font-weight: 300; opacity: 0.95; letter-spacing: 0.5px; }
+.logo-area h1 { 
+    font-size: 36px; 
+    font-weight: 700; 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    margin-bottom: 5px; 
+    letter-spacing: -0.5px; 
+}
+.logo-area h1 i { 
+    color: var(--accent); 
+    font-size: 42px; 
+    filter: drop-shadow(0 2px 4px rgba(242,101,34,0.4)); 
+}
+.logo-area p { 
+    font-size: 16px; 
+    font-weight: 300; 
+    opacity: 0.95; 
+    letter-spacing: 0.5px; 
+}
 
-/* Modern glass buttons with hover animations [web:13][web:18] */
 .auth-btn {
     background: var(--glass-bg); 
     backdrop-filter: var(--blur);
@@ -67,7 +93,15 @@ header {
     overflow: hidden;
 }
 .auth-btn::before {
-    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: 0.6s; }
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: -100%; 
+    width: 100%; 
+    height: 100%; 
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); 
+    transition: 0.6s; 
+}
 .auth-btn:hover::before { left: 100%; }
 .auth-btn:hover { 
     background: rgba(242,101,34,0.9); 
@@ -75,13 +109,28 @@ header {
     transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
 }
-.auth-btn.logout { background: rgba(239,68,68,0.8); border-color: rgba(239,68,68,0.4); }
-.auth-btn.logout:hover { background: rgba(239,68,68,1); }
+.auth-btn.logout { 
+    background: rgba(239,68,68,0.8); 
+    border-color: rgba(239,68,68,0.4); 
+}
+.auth-btn.logout:hover { 
+    background: rgba(239,68,68,1); 
+}
 
-.container { max-width: 1200px; margin: auto; padding: 0 20px; position: relative; z-index: 10; }
+.container { 
+    max-width: 1200px; 
+    margin: auto; 
+    padding: 0 20px; 
+    position: relative; 
+    z-index: 10; 
+}
 
-/* Stats cards with glassmorphism and animations [web:11][web:15] */
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 40px; }
+.stats { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+    gap: 24px; 
+    margin-bottom: 40px; 
+}
 .stat { 
     background: var(--glass-bg); 
     backdrop-filter: var(--blur);
@@ -94,31 +143,53 @@ header {
     border-left: 5px solid rgba(242,101,34,0.6);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     animation: fadeInUp 0.6s ease forwards;
-    opacity: 0; transform: translateY(30px);
+    opacity: 0; 
+    transform: translateY(30px);
 }
-.stat:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.stat:hover { 
+    transform: translateY(-4px); 
+    box-shadow: var(--shadow-hover); 
+}
 .stat:nth-child(1) { animation-delay: 0.1s; }
 .stat:nth-child(2) { animation-delay: 0.2s; }
 .stat:nth-child(3) { animation-delay: 0.3s; }
 .stat:nth-child(4) { animation-delay: 0.4s; }
 .stat-icon { 
-    width: 60px; height: 60px; 
+    width: 60px; 
+    height: 60px; 
     border-radius: 16px; 
-    display: flex; align-items: center; justify-content: center; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
     font-size: 28px; 
     background: rgba(255,255,255,0.4); 
     color: var(--primary); 
     backdrop-filter: var(--blur);
     box-shadow: var(--shadow);
 }
-.stat-info h2 { font-size: 32px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
-.stat-info p { font-size: 14px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.3px; }
+.stat-info h2 { 
+    font-size: 32px; 
+    font-weight: 700; 
+    color: var(--text-main); 
+    margin-bottom: 4px; 
+}
+.stat-info p { 
+    font-size: 14px; 
+    color: var(--text-muted); 
+    font-weight: 500; 
+    letter-spacing: 0.3px; 
+}
 
 @keyframes fadeInUp {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.grid { display: grid; grid-template-columns: 380px 1fr; gap: 40px; align-items: start; }
+.grid { 
+    display: grid; 
+    grid-template-columns: 380px 1fr; 
+    gap: 40px; 
+    align-items: start; 
+}
 .card { 
     background: var(--glass-bg); 
     backdrop-filter: var(--blur);
@@ -127,21 +198,36 @@ header {
     padding: 32px; 
     box-shadow: var(--shadow); 
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 20;
 }
-.card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+.card:hover { 
+    box-shadow: var(--shadow-hover); 
+    transform: translateY(-2px); 
+}
 .card-header { 
-    display: flex; align-items: center; gap: 12px; 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
     margin-bottom: 24px; 
     padding-bottom: 20px; 
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
-.card-header h2 { font-size: 20px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+.card-header h2 { 
+    font-size: 20px; 
+    font-weight: 700; 
+    color: var(--primary); 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+}
 
-/* Modern forms with focus effects */
 .form-group { margin-bottom: 20px; }
 label { 
-    display: block; margin-bottom: 8px; 
-    font-size: 15px; color: var(--text-main); 
+    display: block; 
+    margin-bottom: 8px; 
+    font-size: 15px; 
+    color: var(--text-main); 
     font-weight: 600; 
 }
 input, select, textarea { 
@@ -159,328 +245,4 @@ input:focus, select:focus, textarea:focus {
     outline: none; 
     border-color: var(--accent); 
     background: rgba(255,255,255,0.95); 
-    box-shadow: 0 0 0 4px rgba(242, 101, 34, 0.15);
-    transform: translateY(-1px);
-}
-.btn-submit { 
-    width: 100%; 
-    padding: 16px; 
-    margin-top: 12px; 
-    border: none; 
-    border-radius: 16px; 
-    background: linear-gradient(135deg, var(--accent), #d95517); 
-    color: white; 
-    font-size: 16px; 
-    font-weight: 600; 
-    cursor: pointer; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    gap: 10px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-}
-.btn-submit:hover { 
-    transform: translateY(-2px); 
-    box-shadow: var(--shadow-hover);
-}
-
-/* Modern tickets with subtle animations [web:15][web:20] */
-.ticket-list { display: flex; flex-direction: column; gap: 20px; }
-.ticket { 
-    background: rgba(255,255,255,0.4); 
-    backdrop-filter: var(--blur);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px; 
-    padding: 24px; 
-    transition: all 0.3s ease;
-    animation: slideIn 0.5s ease forwards;
-}
-.ticket:hover { transform: translateX(4px); box-shadow: var(--shadow-hover); }
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-.ticket-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-.ticket-title { font-size: 18px; font-weight: 700; color: var(--primary); }
-.ticket-desc { 
-    font-size: 15px; 
-    color: #334155; 
-    margin-bottom: 20px; 
-    background: rgba(248,250,252,0.6); 
-    padding: 16px; 
-    border-radius: 12px; 
-    border-left: 4px solid var(--accent-container);
-}
-.ticket-meta { 
-    display: flex; flex-wrap: wrap; gap: 20px; 
-    font-size: 13px; color: var(--text-muted); 
-    margin-bottom: 20px; 
-    padding-bottom: 20px; 
-    border-bottom: 1px dashed rgba(196,196,196,0.3);
-}
-.ticket-meta div { display: flex; align-items: center; gap: 6px; }
-.ticket-meta i { font-size: 16px; color: var(--accent); }
-.admin-phone { 
-    color: #d95517; 
-    font-weight: 600; 
-    background: rgba(242, 101, 34, 0.15); 
-    padding: 4px 12px; 
-    border-radius: 20px;
-}
-
-.ticket-footer { display: flex; justify-content: space-between; align-items: center; }
-.badge { 
-    padding: 6px 16px; 
-    border-radius: 25px; 
-    font-size: 13px; 
-    font-weight: 600; 
-}
-.badge.open { background: rgba(254,226,226,0.7); color: #b91c1c; }
-.badge.progress { background: rgba(254,243,199,0.7); color: #b45309; }
-.badge.done { background: rgba(209,250,229,0.7); color: #047857; }
-
-/* Admin controls modernized */
-.admin-controls { display: flex; gap: 12px; align-items: center; }
-.btn-delete { 
-    background: rgba(254,226,226,0.6); 
-    color: #b91c1c; 
-    border: none; 
-    padding: 8px 14px; 
-    border-radius: 8px; 
-    cursor: pointer; 
-    font-size: 13px; 
-    font-weight: 600; 
-    display: flex; 
-    align-items: center; 
-    gap: 6px;
-    transition: all 0.3s ease;
-}
-.btn-delete:hover { 
-    background: rgba(239,68,68,0.9); 
-    color: white; 
-    transform: scale(1.05);
-}
-
-/* Enhanced modal [web:11] */
-.modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(10, 37, 64, 0.7);
-    backdrop-filter: var(--blur);
-    display: flex; justify-content: center; align-items: center; 
-    z-index: 9999;
-    opacity: 0; pointer-events: none; transition: 0.4s ease;
-}
-.modal-overlay.active { opacity: 1; pointer-events: all; }
-.modal-box {
-    background: var(--glass-bg); 
-    backdrop-filter: var(--blur);
-    border: 1px solid var(--glass-border);
-    padding: 40px; 
-    border-radius: 24px; 
-    width: 100%; max-width: 380px;
-    box-shadow: var(--shadow-hover); 
-    transform: translateY(-30px) scale(0.95); 
-    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-    text-align: center;
-}
-.modal-overlay.active .modal-box { transform: translateY(0) scale(1); }
-.modal-box h2 { color: var(--primary); margin-bottom: 24px; font-size: 24px; }
-.modal-close { 
-    position: absolute; top: 20px; right: 20px; 
-    cursor: pointer; 
-    color: #94a3b8; 
-    font-size: 24px;
-    transition: 0.3s;
-}
-.modal-close:hover { color: var(--accent); transform: rotate(90deg); }
-
-#toast { 
-    position: fixed; bottom: 30px; right: 30px; 
-    background: var(--glass-bg); 
-    backdrop-filter: var(--blur);
-    border: 1px solid var(--glass-border);
-    color: white; 
-    padding: 16px 28px; 
-    border-radius: 16px; 
-    display: flex; align-items: center; gap: 12px; 
-    transform: translateX(120%); 
-    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-    z-index: 1000;
-    box-shadow: var(--shadow);
-}
-#toast.show { transform: translateX(0); }
-
-/* Responsive */
-@media (max-width: 768px) {
-    .grid { grid-template-columns: 1fr; gap: 24px; }
-    header { padding: 30px 20px 60px; clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%); }
-    .logo-area h1 { font-size: 28px; }
-}
-</style>
-</head>
-
-<body>
-
-<header>
-    <div class="header-top">
-        <div class="logo-area">
-            <h1><i class="material-icons-round">location_city</i> อต. FIKA</h1>
-            <p>ระบบแจ้งปัญหาเมืองอัจฉริยะ</p>
-        </div>
-        <div id="authContainer">
-            <button class="auth-btn" onclick="openModal()"><i class="material-icons-round">admin_panel_settings</i> สำหรับเจ้าหน้าที่</button>
-        </div>
-    </div>
-</header>
-
-<div class="container">
-    <div class="stats">
-        <div class="stat"><div class="stat-icon"><i class="material-icons-round">analytics</i></div><div class="stat-info"><h2 id="total">0</h2><p>เรื่องทั้งหมด</p></div></div>
-        <div class="stat"><div class="stat-icon"><i class="material-icons-round">new_releases</i></div><div class="stat-info"><h2 id="open">0</h2><p>รอรับเรื่อง</p></div></div>
-        <div class="stat"><div class="stat-icon"><i class="material-icons-round">engineering</i></div><div class="stat-info"><h2 id="progress">0</h2><p>กำลังดำเนินการ</p></div></div>
-        <div class="stat"><div class="stat-icon"><i class="material-icons-round">task_alt</i></div><div class="stat-info"><h2 id="done">0</h2><p>เสร็จสิ้น</p></div></div>
-    </div>
-
-    <div class="grid">
-        <div class="card" style="position: sticky; top: 20px;">
-            <div class="card-header"><h2><i class="material-icons-round">campaign</i> แจ้งปัญหาใหม่</h2></div>
-            <form id="form">
-                <div class="form-group"><label>ชื่อผู้แจ้ง</label><input id="reporter" required></div>
-                <div class="form-group"><label>เบอร์โทรศัพท์ (ไม่บังคับ)</label><input type="tel" id="phone" placeholder="ซ่อนจากบุคคลทั่วไป"></div>
-                <div class="form-group"><label>สถานที่เกิดเหตุ</label><input id="loc" required></div>
-                <div class="form-group">
-                    <label>ประเภทปัญหา</label>
-                    <select id="category">
-                        <option>ถนนชำรุด / หลุมบ่อ</option><option>ไฟถนนดับ</option><option>ปัญหาขยะตกค้าง</option><option>ท่อระบายน้ำ</option>
-                    </select>
-                </div>
-                <div class="form-group"><label>รายละเอียด</label><textarea id="problem" rows="3" required></textarea></div>
-                <button type="submit" class="btn-submit"><i class="material-icons-round">send</i>ส่งแจ้งปัญหา</button>
-            </form>
-        </div>
-
-        <div class="card">
-            <div class="card-header"><h2><i class="material-icons-round">format_list_bulleted</i> รายการแจ้งปัญหา</h2></div>
-            <div id="list" class="ticket-list"></div>
-        </div>
-    </div>
-</div>
-
-<div class="modal-overlay" id="loginModal">
-    <div class="modal-box">
-        <i class="material-icons-round modal-close" onclick="closeModal()">close</i>
-        <h2>เข้าสู่ระบบเจ้าหน้าที่</h2>
-        <div class="form-group" style="text-align: left;">
-            <label>Username</label>
-            <input type="text" id="loginUser" placeholder="ลองพิมพ์: admin">
-        </div>
-        <div class="form-group" style="text-align: left;">
-            <label>Password</label>
-            <input type="password" id="loginPass" placeholder="ลองพิมพ์: 1234">
-        </div>
-        <button class="btn-submit" onclick="checkLogin()" style="margin-top: 20px;"><i class="material-icons-round">login</i>เข้าสู่ระบบ</button>
-    </div>
-</div>
-
-<div id="toast"><i class="material-icons-round">info</i> <span>...</span></div>
-
-<script>
-let tickets = JSON.parse(localStorage.getItem("fika_city_tickets_v3")) || [];
-let nextId = tickets.length ? Math.max(...tickets.map(t => t.id)) + 1 : 1;
-let isAdmin = false;
-
-const ADMIN_USER = "admin";
-const ADMIN_PASS = "1234";
-
-function showToast(msg) {
-    document.querySelector('#toast span').textContent = msg;
-    document.getElementById('toast').classList.add('show');
-    setTimeout(() => document.getElementById('toast').classList.remove('show'), 4000);
-}
-
-function openModal() { document.getElementById('loginModal').classList.add('active'); }
-function closeModal() { 
-    document.getElementById('loginModal').classList.remove('active'); 
-    document.getElementById('loginUser').value = ''; 
-    document.getElementById('loginPass').value = ''; 
-}
-
-function checkLogin() {
-    let u = document.getElementById('loginUser').value;
-    let p = document.getElementById('loginPass').value;
-
-    if(u === ADMIN_USER && p === ADMIN_PASS) {
-        isAdmin = true;
-        closeModal();
-        updateAuthButton();
-        render();
-        showToast("เข้าสู่ระบบเจ้าหน้าที่สำเร็จ ✅");
-    } else {
-        showToast("Username หรือ Password ไม่ถูกต้อง!");
-    }
-}
-
-function logout() {
-    isAdmin = false;
-    updateAuthButton();
-    render();
-    showToast("ออกจากระบบแล้ว");
-}
-
-function updateAuthButton() {
-    let container = document.getElementById('authContainer');
-    if(isAdmin) {
-        container.innerHTML = `<button class="auth-btn logout" onclick="logout()"><i class="material-icons-round">logout</i> ออกจากระบบ</button>`;
-    } else {
-        container.innerHTML = `<button class="auth-btn" onclick="openModal()"><i class="material-icons-round">admin_panel_settings</i> สำหรับเจ้าหน้าที่</button>`;
-    }
-}
-
-function updateStats() {
-    document.getElementById("total").textContent = tickets.length;
-    document.getElementById("open").textContent = tickets.filter(t => t.status === "open").length;
-    document.getElementById("progress").textContent = tickets.filter(t => t.status === "progress").length;
-    document.getElementById("done").textContent = tickets.filter(t => t.status === "done").length;
-}
-
-function deleteTicket(id) {
-    if(confirm("คุณต้องการลบรายการนี้ใช่หรือไม่?")) {
-        tickets = tickets.filter(t => t.id !== id);
-        localStorage.setItem("fika_city_tickets_v3", JSON.stringify(tickets));
-        render();
-        showToast("ลบข้อมูลเรียบร้อยแล้ว ✅");
-    }
-}
-
-function render() {
-    const list = document.getElementById("list");
-    list.innerHTML = "";
-    if(tickets.length === 0) { 
-        list.innerHTML = `<div style="text-align:center; padding: 60px 20px; color:#94a3b8; font-size: 16px;">ไม่มีรายการแจ้งปัญหา<br><i class="material-icons-round" style="font-size:48px; opacity:0.5; margin-bottom:10px;">campaign</i></div>`; 
-        updateStats(); 
-        return; 
-    }
-
-    const statusLabels = { open: "รอรับเรื่อง", progress: "กำลังดำเนินการ", done: "เสร็จสิ้น" };
-
-    tickets.forEach((t, index) => {
-        let phoneHtml = (isAdmin && t.phone) ? `<div class="admin-phone"><i class="material-icons-round">phone</i> ${t.phone}</div>` : "";
-        
-        let adminControls = "";
-        if (isAdmin) {
-            adminControls = `
-                <div class="admin-controls">
-                    <select style="padding: 8px 12px; font-size: 13px; border-radius: 8px; border: 1px solid rgba(196,196,196,0.3); background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);" onchange="updateStatus(${t.id}, this.value)">
-                        <option value="open" ${t.status === "open" ? "selected" : ""}>รอรับเรื่อง</option>
-                        <option value="progress" ${t.status === "progress" ? "selected" : ""}>กำลังดำเนินการ</option>
-                        <option value="done" ${t.status === "done" ? "selected" : ""}>เสร็จสิ้น</option>
-                    </select>
-                    <button class="btn-delete" onclick="deleteTicket(${t.id})"><i class="material-icons-round" style="font-size:16px;">delete</i> ลบ</button>
-                </div>
-            `;
-        }
-
-        list.innerHTML += `
-            <div class="ticket" s
+    box-shadow
