@@ -10,239 +10,413 @@
 
 <style>
 :root {
-    --primary: #0a2540;      
-    --primary-container: #c5d5e8;
-    --accent: #f26522;       
-    --accent-container: #ffede0;
-    --surface: #ffffff;
-    --surface-variant: #e0e3e9;
+    /* โทนสีหลัก สมัยใหม่ (Modern Slate & Vibrant Accents) */
+    --primary: #0f172a;      
+    --primary-light: #1e293b;
+    --accent: #3b82f6;       
+    --accent-hover: #2563eb;
+    --accent-orange: #f97316;
     
-    --glass-bg: rgba(255, 255, 255, 0.25);
-    --glass-border: rgba(255, 255, 255, 0.18);
-    --blur: blur(20px);
-    
-    --bg-body: linear-gradient(135deg, #f0f4ff 0%, #e0e8ff 50%, #f8fbff 100%);
-    --text-main: #1e293b;
+    --bg-body: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #0f172a;
     --text-muted: #64748b;
-    --shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
-    --shadow-hover: 0 20px 40px rgba(31, 38, 135, 0.25);
+    --border-color: #e2e8f0;
+    
+    /* ตัวแปรความโค้งและเงา */
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+    --shadow-hover: 0 20px 40px -10px rgba(0,0,0,0.12);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Prompt", sans-serif; }
-body { 
-    background: var(--bg-body); 
-    color: var(--text-main); 
-    min-height: 100vh; 
-    padding-bottom: 50px; 
-    overflow-x: hidden; 
-}
+body { background: var(--bg-body); color: var(--text-main); min-height: 100vh; padding-bottom: 60px; line-height: 1.6; }
 
+/* --- Header & Nav --- */
 header {
-    background: linear-gradient(135deg, var(--primary), #184273, #2e5a8a);
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
     color: #ffffff; 
-    padding: 40px 20px 80px;
+    padding: 30px 20px 100px; /* เผื่อพื้นที่ให้ Card ลอยทับ */
     position: relative; 
-    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); 
-    margin-bottom: -40px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
+
 .header-top { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: flex-start; 
-    max-width: 1200px; 
-    margin: 0 auto 20px; 
+    display: flex; justify-content: space-between; align-items: center; 
+    max-width: 1200px; margin: 0 auto; 
 }
-.logo-area { text-align: left; }
+
 .logo-area h1 { 
-    font-size: 36px; 
-    font-weight: 700; 
-    display: flex; 
-    align-items: center; 
-    gap: 12px; 
-    margin-bottom: 5px; 
-    letter-spacing: -0.5px; 
+    font-size: 28px; font-weight: 700; display: flex; align-items: center; gap: 12px; margin-bottom: 4px; letter-spacing: -0.5px;
 }
-.logo-area h1 i { 
-    color: var(--accent); 
-    font-size: 42px; 
-    filter: drop-shadow(0 2px 4px rgba(242,101,34,0.4)); 
-}
-.logo-area p { 
-    font-size: 16px; 
-    font-weight: 300; 
-    opacity: 0.95; 
-    letter-spacing: 0.5px; 
-}
+.logo-area h1 i { color: var(--accent-orange); font-size: 34px; background: rgba(249, 115, 22, 0.15); padding: 8px; border-radius: 14px;}
+.logo-area p { font-size: 15px; font-weight: 400; opacity: 0.8; color: #cbd5e1; }
 
+/* ปุ่ม Login / Logout */
 .auth-btn {
-    background: var(--glass-bg); 
-    backdrop-filter: var(--blur);
-    color: white; 
-    border: 1px solid var(--glass-border);
-    padding: 12px 24px; 
-    border-radius: 16px; 
-    font-size: 15px; 
-    font-weight: 600;
-    cursor: pointer; 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
+    background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(8px);
+    padding: 10px 20px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.auth-btn::before {
-    content: ''; 
-    position: absolute; 
-    top: 0; 
-    left: -100%; 
-    width: 100%; 
-    height: 100%; 
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); 
-    transition: 0.6s; 
-}
-.auth-btn:hover::before { left: 100%; }
-.auth-btn:hover { 
-    background: rgba(242,101,34,0.9); 
-    border-color: rgba(242,101,34,0.5); 
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-hover);
-}
-.auth-btn.logout { 
-    background: rgba(239,68,68,0.8); 
-    border-color: rgba(239,68,68,0.4); 
-}
-.auth-btn.logout:hover { 
-    background: rgba(239,68,68,1); 
-}
+.auth-btn:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+.auth-btn.logout { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
+.auth-btn.logout:hover { background: #ef4444; color: white; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
 
-.container { 
-    max-width: 1200px; 
-    margin: auto; 
-    padding: 0 20px; 
-    position: relative; 
-    z-index: 10; 
-}
+.container { max-width: 1200px; margin: -60px auto 0; padding: 0 20px; position: relative; z-index: 10; }
 
-.stats { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
-    gap: 24px; 
-    margin-bottom: 40px; 
-}
+/* --- Stats & Cards --- */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 40px; }
 .stat { 
-    background: var(--glass-bg); 
-    backdrop-filter: var(--blur);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px; 
-    padding: 28px; 
-    display: flex; 
-    align-items: center; 
-    gap: 24px; 
-    border-left: 5px solid rgba(242,101,34,0.6);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: fadeInUp 0.6s ease forwards;
-    opacity: 0; 
-    transform: translateY(30px);
+    background: var(--bg-card); border-radius: var(--radius-lg); padding: 24px; 
+    box-shadow: var(--shadow-soft); display: flex; align-items: center; gap: 20px; 
+    transition: transform 0.3s;
 }
-.stat:hover { 
-    transform: translateY(-4px); 
-    box-shadow: var(--shadow-hover); 
-}
-.stat:nth-child(1) { animation-delay: 0.1s; }
-.stat:nth-child(2) { animation-delay: 0.2s; }
-.stat:nth-child(3) { animation-delay: 0.3s; }
-.stat:nth-child(4) { animation-delay: 0.4s; }
+.stat:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
 .stat-icon { 
-    width: 60px; 
-    height: 60px; 
-    border-radius: 16px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-size: 28px; 
-    background: rgba(255,255,255,0.4); 
-    color: var(--primary); 
-    backdrop-filter: var(--blur);
-    box-shadow: var(--shadow);
+    width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center; justify-content: center; 
+    font-size: 28px; background: #f1f5f9; color: var(--primary); 
 }
-.stat-info h2 { 
-    font-size: 32px; 
-    font-weight: 700; 
-    color: var(--text-main); 
-    margin-bottom: 4px; 
-}
-.stat-info p { 
-    font-size: 14px; 
-    color: var(--text-muted); 
-    font-weight: 500; 
-    letter-spacing: 0.3px; 
-}
+/* ให้สีไอคอนแต่ละอันต่างกันนิดหน่อย */
+.stat:nth-child(1) .stat-icon { background: #e0e7ff; color: #4f46e5; }
+.stat:nth-child(2) .stat-icon { background: #fee2e2; color: #ef4444; }
+.stat:nth-child(3) .stat-icon { background: #fef3c7; color: #d97706; }
+.stat:nth-child(4) .stat-icon { background: #d1fae5; color: #059669; }
 
-@keyframes fadeInUp {
-    to { opacity: 1; transform: translateY(0); }
-}
+.stat-info h2 { font-size: 28px; font-weight: 700; color: var(--text-main); line-height: 1; margin-bottom: 6px; }
+.stat-info p { font-size: 14px; color: var(--text-muted); font-weight: 500; }
 
-.grid { 
-    display: grid; 
-    grid-template-columns: 380px 1fr; 
-    gap: 40px; 
-    align-items: start; 
-}
+/* Grid รองรับ Responsive */
+.grid { display: grid; grid-template-columns: 1fr; gap: 30px; align-items: start; }
+@media(min-width: 900px) { .grid { grid-template-columns: 380px 1fr; } }
+
 .card { 
-    background: var(--glass-bg); 
-    backdrop-filter: var(--blur);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px; 
-    padding: 32px; 
-    box-shadow: var(--shadow); 
-    transition: all 0.3s ease;
-    position: relative;
-    z-index: 20;
+    background: var(--bg-card); border-radius: var(--radius-lg); padding: 30px; 
+    box-shadow: var(--shadow-soft); 
 }
-.card:hover { 
-    box-shadow: var(--shadow-hover); 
-    transform: translateY(-2px); 
-}
-.card-header { 
-    display: flex; 
-    align-items: center; 
-    gap: 12px; 
-    margin-bottom: 24px; 
-    padding-bottom: 20px; 
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-.card-header h2 { 
-    font-size: 20px; 
-    font-weight: 700; 
-    color: var(--primary); 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-}
+.card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.card-header h2 { font-size: 20px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 10px;}
+.card-header h2 i { background: #f1f5f9; padding: 8px; border-radius: 12px; color: var(--accent); }
 
+/* --- Forms --- */
 .form-group { margin-bottom: 20px; }
-label { 
-    display: block; 
-    margin-bottom: 8px; 
-    font-size: 15px; 
-    color: var(--text-main); 
-    font-weight: 600; 
-}
+label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-main); font-weight: 600; }
 input, select, textarea { 
-    width: 100%; 
-    padding: 14px 18px; 
-    border-radius: 12px; 
-    border: 1px solid rgba(196, 196, 196, 0.3); 
-    background: rgba(255,255,255,0.7); 
-    font-size: 15px; 
-    backdrop-filter: var(--blur);
-    transition: all 0.3s ease;
-    font-family: inherit;
+    width: 100%; padding: 14px 16px; border-radius: var(--radius-sm); 
+    border: 1.5px solid var(--border-color); background: #f8fafc; 
+    font-size: 15px; transition: all 0.3s ease; color: var(--text-main);
 }
 input:focus, select:focus, textarea:focus { 
-    outline: none; 
-    border-color: var(--accent); 
-    background: rgba(255,255,255,0.95); 
-    box-shadow
+    outline: none; border-color: var(--accent); background: #ffffff; 
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); 
+}
+input::placeholder, textarea::placeholder { color: #94a3b8; }
+
+.btn-submit { 
+    width: 100%; padding: 16px; margin-top: 10px; border: none; border-radius: var(--radius-sm); 
+    background: var(--accent); color: white; font-size: 16px; font-weight: 600; 
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; 
+    transition: all 0.3s; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+.btn-submit:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4); }
+
+/* --- Tickets --- */
+.ticket-list { display: flex; flex-direction: column; gap: 20px; }
+.ticket { 
+    background: #ffffff; border-radius: var(--radius-md); padding: 24px; 
+    border: 1px solid var(--border-color); transition: all 0.3s;
+}
+.ticket:hover { border-color: #cbd5e1; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); transform: scale(1.01); }
+
+.ticket-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.ticket-id { font-size: 13px; color: #94a3b8; font-weight: 600; margin-bottom: 4px; display: block; }
+.ticket-title { font-size: 18px; font-weight: 700; color: var(--primary); }
+
+.ticket-desc { 
+    font-size: 15px; color: #475569; margin-bottom: 20px; background: #f8fafc; 
+    padding: 16px; border-radius: var(--radius-sm); line-height: 1.6; border-left: 4px solid var(--border-color);
+}
+
+.ticket-meta { 
+    display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--text-muted); 
+    margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); 
+}
+.ticket-meta div { display: flex; align-items: center; gap: 6px; background: #f1f5f9; padding: 6px 12px; border-radius: 8px; font-weight: 500;}
+.ticket-meta i { font-size: 16px; color: var(--accent); }
+.admin-phone { color: #d97706 !important; background: #fef3c7 !important; }
+
+.ticket-footer { display: flex; justify-content: space-between; align-items: center; }
+
+/* Badges */
+.badge { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.badge::before { content: ''; width: 8px; height: 8px; border-radius: 50%; }
+.badge.open { background: #fee2e2; color: #b91c1c; }
+.badge.open::before { background: #ef4444; }
+.badge.progress { background: #fef3c7; color: #b45309; }
+.badge.progress::before { background: #f59e0b; }
+.badge.done { background: #d1fae5; color: #047857; }
+.badge.done::before { background: #10b981; }
+
+/* --- Admin Elements --- */
+.admin-controls { display: flex; gap: 10px; align-items: center; }
+.admin-controls select { width: auto; padding: 8px 12px; font-size: 13px; cursor: pointer; }
+.btn-delete { 
+    background: white; color: #ef4444; border: 1px solid #fca5a5; padding: 8px 14px; 
+    border-radius: var(--radius-sm); cursor: pointer; font-size: 13px; font-weight: 600; 
+    display: flex; align-items: center; gap: 6px; transition: 0.2s;
+}
+.btn-delete:hover { background: #ef4444; color: white; border-color: #ef4444; }
+
+/* --- Modal --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+    display: flex; justify-content: center; align-items: center; z-index: 9999;
+    opacity: 0; pointer-events: none; transition: 0.3s;
+}
+.modal-overlay.active { opacity: 1; pointer-events: all; }
+.modal-box {
+    background: white; padding: 40px; border-radius: var(--radius-lg); width: 100%; max-width: 400px;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); transform: translateY(-20px) scale(0.95); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center; position: relative;
+}
+.modal-overlay.active .modal-box { transform: translateY(0) scale(1); }
+.modal-box h2 { color: var(--primary); margin-bottom: 24px; font-size: 24px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.modal-close { position: absolute; top: 20px; right: 20px; cursor: pointer; color: #94a3b8; background: #f1f5f9; border-radius: 50%; padding: 4px; transition: 0.2s; }
+.modal-close:hover { color: #0f172a; background: #e2e8f0; }
+
+/* --- Toast --- */
+#toast { 
+    position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: white; 
+    padding: 16px 24px; border-radius: var(--radius-sm); display: flex; align-items: center; gap: 12px; 
+    transform: translateY(150%); opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-weight: 500;
+}
+#toast.show { transform: translateY(0); opacity: 1; }
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-top">
+        <div class="logo-area">
+            <h1><i class="material-icons-round">location_city</i> อต. FIKA</h1>
+            <p>ระบบแจ้งปัญหาเมืองอัจฉริยะ (Smart City Helpdesk)</p>
+        </div>
+        <div id="authContainer">
+            <button class="auth-btn" onclick="openModal()"><i class="material-icons-round">admin_panel_settings</i> สำหรับเจ้าหน้าที่</button>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="stats">
+        <div class="stat"><div class="stat-icon"><i class="material-icons-round">analytics</i></div><div class="stat-info"><h2 id="total">0</h2><p>เรื่องทั้งหมด</p></div></div>
+        <div class="stat"><div class="stat-icon"><i class="material-icons-round">new_releases</i></div><div class="stat-info"><h2 id="open">0</h2><p>รอรับเรื่อง</p></div></div>
+        <div class="stat"><div class="stat-icon"><i class="material-icons-round">engineering</i></div><div class="stat-info"><h2 id="progress">0</h2><p>กำลังดำเนินการ</p></div></div>
+        <div class="stat"><div class="stat-icon"><i class="material-icons-round">task_alt</i></div><div class="stat-info"><h2 id="done">0</h2><p>เสร็จสิ้น</p></div></div>
+    </div>
+
+    <div class="grid">
+        <div class="card" style="position: sticky; top: 30px;">
+            <div class="card-header"><h2><i class="material-icons-round">campaign</i> แจ้งปัญหาใหม่</h2></div>
+            <form id="form">
+                <div class="form-group"><label>ชื่อผู้แจ้ง</label><input id="reporter" placeholder="ชื่อ-นามสกุล ของคุณ" required></div>
+                <div class="form-group"><label>เบอร์โทรศัพท์ (ไม่บังคับ)</label><input type="tel" id="phone" placeholder="ซ่อนจากบุคคลทั่วไป"></div>
+                <div class="form-group"><label>สถานที่เกิดเหตุ</label><input id="loc" placeholder="เช่น ซอย 5 หน้าตึก A" required></div>
+                <div class="form-group">
+                    <label>ประเภทปัญหา</label>
+                    <select id="category">
+                        <option>ถนนชำรุด / หลุมบ่อ</option><option>ไฟถนนดับ</option><option>ปัญหาขยะตกค้าง</option><option>ท่อระบายน้ำ</option><option>ปัญหาจราจร</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>รายละเอียด</label><textarea id="problem" rows="3" placeholder="อธิบายลักษณะปัญหาเพิ่มเติม..." required></textarea></div>
+                <button type="submit" class="btn-submit"><i class="material-icons-round">send</i> ส่งแจ้งปัญหา</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h2><i class="material-icons-round">format_list_bulleted</i> รายการแจ้งปัญหา</h2></div>
+            <div id="list" class="ticket-list"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="loginModal">
+    <div class="modal-box">
+        <i class="material-icons-round modal-close" onclick="closeModal()">close</i>
+        <h2><i class="material-icons-round">lock_person</i> เข้าสู่ระบบ</h2>
+        <div class="form-group" style="text-align: left;">
+            <label>Username</label>
+            <input type="text" id="loginUser" placeholder="ลองพิมพ์: admin">
+        </div>
+        <div class="form-group" style="text-align: left;">
+            <label>Password</label>
+            <input type="password" id="loginPass" placeholder="ลองพิมพ์: 1234">
+        </div>
+        <button class="btn-submit" onclick="checkLogin()" style="margin-top: 24px;">เข้าสู่ระบบจัดการ</button>
+    </div>
+</div>
+
+<div id="toast"><i class="material-icons-round">info</i> <span>...</span></div>
+
+<script>
+let tickets = JSON.parse(localStorage.getItem("fika_city_tickets_v3")) || [];
+let nextId = tickets.length ? Math.max(...tickets.map(t => t.id)) + 1 : 1;
+
+let isAdmin = false;
+
+// 🔑 Hardcoded Credentials
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "1234";
+
+function showToast(msg) {
+    document.querySelector('#toast span').textContent = msg;
+    document.getElementById('toast').classList.add('show');
+    setTimeout(() => document.getElementById('toast').classList.remove('show'), 3000);
+}
+
+function openModal() { document.getElementById('loginModal').classList.add('active'); }
+function closeModal() { document.getElementById('loginModal').classList.remove('active'); document.getElementById('loginUser').value = ''; document.getElementById('loginPass').value = ''; }
+
+function checkLogin() {
+    let u = document.getElementById('loginUser').value;
+    let p = document.getElementById('loginPass').value;
+
+    if(u === ADMIN_USER && p === ADMIN_PASS) {
+        isAdmin = true;
+        closeModal();
+        updateAuthButton();
+        render();
+        showToast("เข้าสู่ระบบเจ้าหน้าที่สำเร็จ");
+    } else {
+        alert("Username หรือ Password ไม่ถูกต้อง!");
+    }
+}
+
+function logout() {
+    isAdmin = false;
+    updateAuthButton();
+    render();
+    showToast("ออกจากระบบแล้ว");
+}
+
+function updateAuthButton() {
+    let container = document.getElementById('authContainer');
+    if(isAdmin) {
+        container.innerHTML = `<button class="auth-btn logout" onclick="logout()"><i class="material-icons-round">logout</i> ออกจากระบบ</button>`;
+    } else {
+        container.innerHTML = `<button class="auth-btn" onclick="openModal()"><i class="material-icons-round">admin_panel_settings</i> สำหรับเจ้าหน้าที่</button>`;
+    }
+}
+
+function updateStats() {
+    document.getElementById("total").textContent = tickets.length;
+    document.getElementById("open").textContent = tickets.filter(t => t.status === "open").length;
+    document.getElementById("progress").textContent = tickets.filter(t => t.status === "progress").length;
+    document.getElementById("done").textContent = tickets.filter(t => t.status === "done").length;
+}
+
+function deleteTicket(id) {
+    if(confirm("คุณต้องการลบรายการนี้ใช่หรือไม่?")) {
+        tickets = tickets.filter(t => t.id !== id);
+        localStorage.setItem("fika_city_tickets_v3", JSON.stringify(tickets));
+        render();
+        showToast("ลบข้อมูลเรียบร้อยแล้ว");
+    }
+}
+
+function render() {
+    const list = document.getElementById("list");
+    list.innerHTML = "";
+    if(tickets.length === 0) { 
+        list.innerHTML = `
+        <div style="text-align:center; padding: 60px 20px; color:#94a3b8;">
+            <i class="material-icons-round" style="font-size: 64px; opacity: 0.5; margin-bottom: 16px; display: block;">check_circle_outline</i>
+            ไม่มีรายการแจ้งปัญหาใหม่ในขณะนี้
+        </div>`; 
+        updateStats(); return; 
+    }
+
+    const statusLabels = { open: "รอรับเรื่อง", progress: "กำลังดำเนินการ", done: "เสร็จสิ้น" };
+
+    tickets.forEach((t) => {
+        let phoneHtml = (isAdmin && t.phone) ? `<div class="admin-phone"><i class="material-icons-round">phone</i> ${t.phone}</div>` : "";
+        
+        let adminControls = "";
+        if (isAdmin) {
+            adminControls = `
+                <div class="admin-controls">
+                    <select onchange="updateStatus(${t.id}, this.value)">
+                        <option value="open" ${t.status === "open" ? "selected" : ""}>รอรับเรื่อง</option>
+                        <option value="progress" ${t.status === "progress" ? "selected" : ""}>กำลังดำเนินการ</option>
+                        <option value="done" ${t.status === "done" ? "selected" : ""}>เสร็จสิ้น</option>
+                    </select>
+                    <button class="btn-delete" onclick="deleteTicket(${t.id})"><i class="material-icons-round" style="font-size:16px;">delete</i> ลบ</button>
+                </div>
+            `;
+        }
+
+        list.innerHTML += `
+            <div class="ticket">
+                <div class="ticket-top">
+                    <div>
+                        <span class="ticket-id">#FIKA-${t.id}</span>
+                        <div class="ticket-title">${t.category}</div>
+                    </div>
+                    <span class="badge ${t.status}">${statusLabels[t.status]}</span>
+                </div>
+                <div class="ticket-desc">${t.problem}</div>
+                <div class="ticket-meta">
+                    <div><i class="material-icons-round">place</i> ${t.location}</div>
+                    <div><i class="material-icons-round">person</i> ${t.reporter}</div>
+                    ${phoneHtml}
+                </div>
+                <div class="ticket-footer">
+                    <span style="font-size: 13px; color: #64748b; font-weight: 500;">
+                        ${isAdmin ? "เครื่องมือเจ้าหน้าที่:" : "สถานะการทำงาน"}
+                    </span>
+                    ${adminControls}
+                </div>
+            </div>
+        `;
+    });
+    updateStats();
+}
+
+function updateStatus(id, status) {
+    let t = tickets.find(x => x.id === id);
+    if(t) { 
+        t.status = status; 
+        localStorage.setItem("fika_city_tickets_v3", JSON.stringify(tickets)); 
+        render(); 
+        showToast("อัปเดตสถานะเป็น: " + (status === 'open' ? 'รอรับเรื่อง' : status === 'progress' ? 'กำลังดำเนินการ' : 'เสร็จสิ้น')); 
+    }
+}
+
+document.getElementById("form").onsubmit = e => {
+    e.preventDefault();
+    let ticket = {
+        id: nextId++,
+        reporter: document.getElementById("reporter").value,
+        phone: document.getElementById("phone").value,
+        location: document.getElementById("loc").value,
+        category: document.getElementById("category").value,
+        problem: document.getElementById("problem").value,
+        status: "open"
+    };
+    tickets.unshift(ticket);
+    localStorage.setItem("fika_city_tickets_v3", JSON.stringify(tickets));
+    render();
+    e.target.reset();
+    showToast("ส่งเรื่องแจ้งปัญหาเรียบร้อยแล้ว");
+};
+
+// Initial Render
+render();
+</script>
+
+</body>
+</html>
